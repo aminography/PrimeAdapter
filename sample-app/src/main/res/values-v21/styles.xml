@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme.NoActionBar.SmokyStatus" parent="AppTheme.NoActionBar">
+        <!--<item name="android:windowTranslucentStatus">true</item>-->
+        <item name="android:statusBarColor">@color/transparentBlack</item>
+    </style>
+
+    <style name="GreenColoredButtonTheme" parent="ColoredButtonTheme">
+        <item name="android:colorControlHighlight">@color/greenButtonPressed</item>
+        <item name="android:colorButtonNormal">@color/greenButtonNormal</item>
+    </style>
+
+</resources>
