@@ -8,7 +8,7 @@ It brings you simplicity when you have multiple view types in a `RecyclerView`.
 How to use PrimeAdapter?
 --------
   
-* You should create both **data holder** and **view holder** classes for each type of view that you want to show in `RecyclerView`.
+1. You should create both **data holder** and **view holder** classes for each type of view that you want to show in `RecyclerView`.
 It's necessary to add `@DataHolder` annotation above all data holder classes which inherits from `PrimeDataHolder`:
 
 ```kotlin
@@ -18,7 +18,7 @@ data class ActorDataHolder(
 ) : PrimeDataHolder()
 ```
  
-* Each view holder class should inherits from `PrimeViewHolder` and specify related data holder as type parameter like following:
+2. Each view holder class should inherits from `PrimeViewHolder` and specify related data holder as type parameter like following:
 
 ```kotlin
 class ActorViewHolder(
@@ -33,7 +33,7 @@ class ActorViewHolder(
 }
 ```
   
-* Your custom adapter class must inherits from `PrimeAdapter` that decides to make view holder instance according to appropriate data holder.
+3. Your custom adapter class must inherits from `PrimeAdapter` that decides to make view holder instance according to appropriate data holder.
 Follow this pattern:
 
 ```kotlin
@@ -48,7 +48,7 @@ class ActorAdapter : PrimeAdapter() {
 }
 ```
 
-* Finally, you can instantiate your custom adapter using `PrimeAdapter` builder mechanism.
+4. Finally, you can instantiate your custom adapter using `PrimeAdapter` builder mechanism.
 
 ```kotlin
 override fun onCreate(savedInstanceState: Bundle?) {
