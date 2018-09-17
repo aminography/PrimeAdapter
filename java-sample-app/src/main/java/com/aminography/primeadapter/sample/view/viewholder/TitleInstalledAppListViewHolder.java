@@ -3,7 +3,7 @@ package com.aminography.primeadapter.sample.view.viewholder;
 import android.widget.TextView;
 
 import com.aminography.primeadapter.PrimeViewHolder;
-import com.aminography.primeadapter.callback.IPrimeAdapterDelegate;
+import com.aminography.primeadapter.callback.PrimeDelegate;
 import com.aminography.primeadapter.sample.R;
 import com.aminography.primeadapter.sample.view.dataholder.TitleInstalledAppListDataHolder;
 
@@ -18,7 +18,7 @@ public class TitleInstalledAppListViewHolder extends PrimeViewHolder<TitleInstal
 
     private TextView appCountTextView;
 
-    public TitleInstalledAppListViewHolder(@NotNull IPrimeAdapterDelegate delegate) {
+    public TitleInstalledAppListViewHolder(@NotNull PrimeDelegate delegate) {
         super(delegate, R.layout.list_item_title_installed_app_list);
         appCountTextView = itemView.findViewById(R.id.appCountTextView);
     }

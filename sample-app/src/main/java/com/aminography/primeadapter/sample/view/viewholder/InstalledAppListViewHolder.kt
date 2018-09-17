@@ -2,7 +2,7 @@ package com.aminography.primeadapter.sample.view.viewholder
 
 import android.view.View
 import com.aminography.primeadapter.PrimeViewHolder
-import com.aminography.primeadapter.callback.IPrimeAdapterDelegate
+import com.aminography.primeadapter.callback.PrimeDelegate
 import com.aminography.primeadapter.sample.R
 import com.aminography.primeadapter.sample.tools.TextUtils
 import com.aminography.primeadapter.sample.tools.loadImage
@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.list_item_installed_app_list.view.*
  * Created by aminography on 8/17/2018.
  */
 class InstalledAppListViewHolder(
-        private val delegate: IPrimeAdapterDelegate
+        private val delegate: PrimeDelegate
 ) : PrimeViewHolder<InstalledAppListDataHolder>(delegate, R.layout.list_item_installed_app_list) {
 
     override fun bindDataToView(dataHolder: InstalledAppListDataHolder) {

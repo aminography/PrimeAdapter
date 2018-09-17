@@ -11,7 +11,7 @@ import android.support.v7.widget.SnapHelper
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.aminography.primeadapter.callback.IPrimeAdapterDelegate
+import com.aminography.primeadapter.callback.PrimeDelegate
 import com.aminography.primeadapter.callback.OnRecyclerViewItemClickListener
 import com.aminography.primeadapter.divider.SkipDividerItemDecorator
 import com.aminography.primeadapter.draghelper.DragItemTouchHelperCallback
@@ -24,7 +24,7 @@ import com.aminography.primeadapter.tools.PrimeAdapterUtils
 /**
  * Created by aminography on 6/6/2018.
  */
-abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHolder>>(), IPrimeAdapterDelegate {
+abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHolder>>(), PrimeDelegate {
 
     protected lateinit var context: Context
     protected lateinit var layoutInflater: LayoutInflater

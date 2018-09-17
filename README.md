@@ -22,7 +22,7 @@ Each view holder class should inherits from `PrimeViewHolder` and specify relate
 
 ```kotlin
 class ActorViewHolder(
-        delegate: IPrimeAdapterDelegate
+        delegate: PrimeDelegate
 ) : PrimeViewHolder<ActorDataHolder>(delegate, R.layout.list_item) {
   
     override fun bindDataToView(dataHolder: ActorDataHolder) {

@@ -5,7 +5,7 @@ import android.support.annotation.LayoutRes
 import android.support.v4.view.MotionEventCompat
 import android.support.v7.widget.RecyclerView
 import android.view.MotionEvent
-import com.aminography.primeadapter.callback.IPrimeAdapterDelegate
+import com.aminography.primeadapter.callback.PrimeDelegate
 import com.aminography.primeadapter.draghelper.ItemTouchHelperViewHolder
 import com.aminography.primeadapter.tools.consume
 
@@ -14,7 +14,7 @@ import com.aminography.primeadapter.tools.consume
  * Created by aminography on 6/6/2018.
  */
 abstract class PrimeViewHolder<T : PrimeDataHolder>(
-        private val adapterDelegate: IPrimeAdapterDelegate,
+        private val adapterDelegate: PrimeDelegate,
         @LayoutRes layoutResourceID: Int
 ) : RecyclerView.ViewHolder(adapterDelegate.getInflater().inflate(layoutResourceID, adapterDelegate.getParentView(), false)), ItemTouchHelperViewHolder {
 

@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aminography.primeadapter.PrimeViewHolder;
-import com.aminography.primeadapter.callback.IPrimeAdapterDelegate;
+import com.aminography.primeadapter.callback.PrimeDelegate;
 import com.aminography.primeadapter.sample.R;
 import com.aminography.primeadapter.sample.logic.InstalledAppData;
 import com.aminography.primeadapter.sample.tools.TextUtils;
@@ -22,14 +22,14 @@ import java.util.Locale;
  */
 public class InstalledAppListViewHolder extends PrimeViewHolder<InstalledAppListDataHolder> {
 
-    private IPrimeAdapterDelegate delegate;
+    private PrimeDelegate delegate;
     private TextView appNameTextView;
     private ImageView appIconImageView;
     private TextView appSizeTextView;
     private TextView bottomTextView;
     private ImageButton expansionImageButton;
 
-    public InstalledAppListViewHolder(@NotNull IPrimeAdapterDelegate delegate) {
+    public InstalledAppListViewHolder(@NotNull PrimeDelegate delegate) {
         super(delegate, R.layout.list_item_installed_app_list);
         this.delegate = delegate;
         appNameTextView = itemView.findViewById(R.id.appNameTextView);
