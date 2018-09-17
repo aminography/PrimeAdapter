@@ -1,4 +1,4 @@
-# PrimeAdapter
+# PrimeAdapter :sparkles:
 [![API](https://img.shields.io/badge/API-9%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=15)
 [![Download](https://api.bintray.com/packages/aminography/maven/PrimeAdapter/images/download.svg) ](https://bintray.com/aminography/maven/PrimeAdapter/_latestVersion)
   
@@ -9,7 +9,7 @@ How to use PrimeAdapter?
 --------
   
 You should create both **data holder** and **view holder** classes for each type of view that you want to show in `RecyclerView`.
-It's necessary to add :sparkles: `@DataHolder` annotation above all data holder classes which inherits from `PrimeDataHolder`:
+It's necessary to add `@DataHolder` annotation above all data holder classes which inherits from `PrimeDataHolder`:
 
 ```kotlin
 @DataHolder
