@@ -56,7 +56,6 @@ override fun onCreate(savedInstanceState: Bundle?) {
     setContentView(R.layout.activity_main)
       
     val adapter = PrimeAdapter.with(recyclerView)
-                    .setItemClickListener(this)
                     .setLayoutManager(LinearLayoutManager(activity))
                     .set()
                     .build(ActorAdapter::class.java)
