@@ -10,7 +10,7 @@ How to use PrimeAdapter?
 --------
   
 You should create both **data holder** and **view holder** classes for each type of view that you want to show in `RecyclerView`.
-1. It's necessary to add [`@DataHolder`]() annotation above all data holder classes which inherits from `PrimeDataHolder`:
+1. It's necessary to add [`@DataHolder`] annotation above all data holder classes which inherits from `PrimeDataHolder`:
 
 ```kotlin
 @DataHolder
