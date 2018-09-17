@@ -1,5 +1,5 @@
 # PrimeAdapter :zap:
-[![API](https://img.shields.io/badge/API-9%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=15)
+[![API](https://img.shields.io/badge/API-9%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=9)
 [![Download](https://api.bintray.com/packages/aminography/maven/PrimeAdapter/images/download.svg) ](https://bintray.com/aminography/maven/PrimeAdapter/_latestVersion)
   
 **PrimeAdapter** makes working with `RecyclerView` easier by separating needed codes in some simple clean classes.
