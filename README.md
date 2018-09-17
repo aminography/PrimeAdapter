@@ -68,6 +68,10 @@ override fun onCreate(savedInstanceState: Bundle?) {
 }
 ```
 
+Advanced Features
+--------
+Too see PrimeAdapter features, see the [wiki][1].
+
 Download
 --------
 Add the following lines to your `build.gradle` file:
@@ -112,3 +116,5 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
+
+[1]: https://github.com/aminography/PrimeAdapter/wiki
