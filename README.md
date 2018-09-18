@@ -22,7 +22,7 @@ data class ActorDataHolder(
 ) : PrimeDataHolder()
 ```
  
-2. Each view holder class should inherits from `PrimeViewHolder` and specify related data holder as type parameter like following:
+2. Each view holder class should inherit from `PrimeViewHolder` and specify related data holder as a type parameter like following:
 
 ```kotlin
 class ActorViewHolder(
