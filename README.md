@@ -74,6 +74,20 @@ override fun onCreate(savedInstanceState: Bundle?) {
 
 Advanced Features
 --------
+**PrimeAdapter** helps you make the `RecyclerView` items draggable,
+simply by calling `setDraggable(true)` when you're building an adapter instance or later:
+
+```kotlin
+val adapter = PrimeAdapter.with(recyclerView)
+                ...
+                .setDraggable(true) // or `false` for deactivation
+                ...
+                .build(ActorAdapter::class.java)
+                
+...
+adapter.setDraggable(true) // or `false` for deactivation
+```
+
 Too see PrimeAdapter features, see the [wiki][1].
 
 Download
