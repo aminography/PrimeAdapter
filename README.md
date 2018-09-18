@@ -133,6 +133,8 @@ Calling the `setExpandable(true)`/`setExpandable(false)` on a builder or on adap
 adapter.setExpandable(true)
 ```
 
+To see how to implement it, please check the [related example class][2].
+
 ### Custom Skip Divider
 **PrimeAdapter** helps you make the `RecyclerView` items expandable,
 simply by calling `setExpandable(true)` when you're building an adapter instance or later:
@@ -150,7 +152,7 @@ adapter.setDivider() // or pass `setDivider(null)` for deactivation
 By default dividers are shown for all items except the last one.
 It's easy to hide an item's divider by setting `hasDivider` property to `false` on its data holder instance.
 
-Too learn more, see the [wiki][1].
+To learn more, see the [wiki][1].
 
 License
 --------
@@ -171,3 +173,4 @@ limitations under the License.
 ```
 
 [1]: https://github.com/aminography/PrimeAdapter/wiki
+[2]: https://github.com/aminography/PrimeAdapter/blob/master/sample-app/src/main/java/com/aminography/primeadapter/sample/view/viewholder/InstalledAppListViewHolder.kt
