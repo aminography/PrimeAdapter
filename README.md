@@ -136,21 +136,18 @@ adapter.setExpandable(true)
 To see how to implement it, please check the [related example class][2].
 
 ### Custom Skip Divider
-**PrimeAdapter** helps you make the `RecyclerView` items expandable,
-simply by calling `setExpandable(true)` when you're building an adapter instance or later:
+Showing custom divider lines is a good feature that **PrimeAdapter** provides.
+Calling the `setDivider()` on a builder or on adapter instance leads to show default divider line between items.
+It's possible to pass it a custom `Drawable` instance or simply a color to change the divider looking.
 
 ```kotlin
-val adapter = PrimeAdapter.with(recyclerView)
-                ...
-                .setDivider() // or `setDivider(null)` for deactivation
-                ...
-                .build(ActorAdapter::class.java)
-                
-...
 adapter.setDivider() // or pass `setDivider(null)` for deactivation
+adapter.setDivider(ContextCompat.getDrawable(context, R.drawable.divider))
+adapter.setDivider(Color.RED)
+adapter.setDivider(Color.RED, insetLeft = 16, insetRight = 16) // with custom inset in pixels
 ```
 By default dividers are shown for all items except the last one.
-It's easy to hide an item's divider by setting `hasDivider` property to `false` on its data holder instance.
+It's easy to skip some items divider by setting `hasDivider` property to `false` on their data holder instances.
 
 To learn more, see the [wiki][1].
 
