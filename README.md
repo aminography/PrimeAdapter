@@ -111,12 +111,12 @@ simply by calling `setExpandable(true)` when you're building an adapter instance
 ```kotlin
 val adapter = PrimeAdapter.with(recyclerView)
                 ...
-                .setDivider() // or pass `null` for deactivation
+                .setDivider() // or `setDivider(null)` for deactivation
                 ...
                 .build(ActorAdapter::class.java)
                 
 ...
-adapter.setDivider() // or pass `null` for deactivation
+adapter.setDivider() // or pass `setDivider(null)` for deactivation
 ```
 
 Too learn more, see the [wiki][1].
