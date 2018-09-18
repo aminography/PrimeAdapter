@@ -160,6 +160,11 @@ adapter.setDivider(null)
 By default dividers are shown for all items except the last one.
 It's easy to skip some items divider by setting `hasDivider` property to `false` on their data holder instances.
 
+```kotlin
+adapter.getItem(position).hasDivider = false
+adapter.notifyDataSetChanged()
+```
+
 License
 --------
 ```
