@@ -74,21 +74,52 @@ override fun onCreate(savedInstanceState: Bundle?) {
 
 Advanced Features
 --------
+### Draggability
 **PrimeAdapter** helps you make the `RecyclerView` items draggable,
 simply by calling `setDraggable(true)` when you're building an adapter instance or later:
 
 ```kotlin
 val adapter = PrimeAdapter.with(recyclerView)
                 ...
-                .setDraggable(true) // or `false` for deactivation
+                .setDraggable(true) // or pass `false` for deactivation
                 ...
                 .build(ActorAdapter::class.java)
                 
 ...
-adapter.setDraggable(true) // or `false` for deactivation
+adapter.setDraggable(true) // or pass `false` for deactivation
 ```
 
-Too see PrimeAdapter features, see the [wiki][1].
+### Expandability
+**PrimeAdapter** helps you make the `RecyclerView` items expandable,
+simply by calling `setExpandable(true)` when you're building an adapter instance or later:
+
+```kotlin
+val adapter = PrimeAdapter.with(recyclerView)
+                ...
+                .setExpandable(true) // or pass `false` for deactivation
+                ...
+                .build(ActorAdapter::class.java)
+                
+...
+adapter.setExpandable(true) // or pass `false` for deactivation
+```
+
+### Custom Skip Divider
+**PrimeAdapter** helps you make the `RecyclerView` items expandable,
+simply by calling `setExpandable(true)` when you're building an adapter instance or later:
+
+```kotlin
+val adapter = PrimeAdapter.with(recyclerView)
+                ...
+                .setDivider() // or pass `null` for deactivation
+                ...
+                .build(ActorAdapter::class.java)
+                
+...
+adapter.setDivider() // or pass `null` for deactivation
+```
+
+Too learn more, see the [wiki][1].
 
 Download
 --------
