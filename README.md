@@ -112,7 +112,14 @@ val adapter = PrimeAdapter.with(recyclerView)
                 .build(ActorAdapter::class.java)
                 
 ...
-adapter.setItemClickListener(onRecyclerViewItemClickListener)
+adapter.setItemClickListener(object: OnRecyclerViewItemClickListener{
+    override fun onItemClick(primeDataHolder: PrimeDataHolder) {
+        // do something
+    }
+    override fun onItemLongClick(primeDataHolder: PrimeDataHolder) {
+        // do something
+    }
+})
 ```
 
 ### Draggability
@@ -122,7 +129,11 @@ Optionally, you can get notified about item movements by calling `setItemDragLis
 
 ```kotlin
 adapter.setDraggable(true)
-adapter.setItemDragListener(onRecyclerViewItemDragListener)
+adapter.setItemDragListener(object: OnRecyclerViewItemDragListener{
+    override fun onItemMoved(fromPosition: Int, toPosition: Int) {
+        // do something
+    }
+})
 ```
 
 ### Expandability
