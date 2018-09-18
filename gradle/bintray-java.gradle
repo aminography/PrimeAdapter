@@ -32,14 +32,14 @@ if(project.rootProject.file('local.properties').exists()){
     Properties properties = new Properties()
     properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
-    def local_user = properties.getProperty("bintray.user");
-    if(local_user != null) _user = local_user;
+    def local_user = properties.getProperty("bintray.user")
+    if(local_user != null) _user = local_user
 
-    def local_key = properties.getProperty("bintray.apikey");
-    if(local_key != null) _key = local_key;
+    def local_key = properties.getProperty("bintray.apikey")
+    if(local_key != null) _key = local_key
 
-    def local_passphrase = properties.getProperty("bintray.gpg.password");
-    if(local_passphrase != null) _passphrase = local_passphrase;
+    def local_passphrase = properties.getProperty("bintray.gpg.password")
+    if(local_passphrase != null) _passphrase = local_passphrase
 }
 
 bintray {
