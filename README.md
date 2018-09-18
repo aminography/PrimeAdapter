@@ -9,6 +9,32 @@ You can use **PrimeAdapter** in both [Kotlin](https://github.com/aminography/Pri
   
 ![](static/prime_logo.png)
   
+Download
+--------
+Add the following lines to your `build.gradle` file:
+```gradle
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+  
+repositories {
+    jcenter()
+}
+  
+dependencies {
+    implementation 'com.aminography:primeadapter:1.0.2'
+    compileOnly 'com.aminography:primeadapter-annotation:1.0.2'
+    kapt 'com.aminography:primeadapter-processor:1.0.2'
+}
+```
+
+* If you write code in Java, you should also add kotlin dependency too:
+```gradle
+dependencies {
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.70'
+}
+```
+  
 How to use PrimeAdapter?
 --------
   
@@ -74,19 +100,29 @@ override fun onCreate(savedInstanceState: Bundle?) {
 
 Advanced Features
 --------
-### Draggability
-**PrimeAdapter** helps you make the `RecyclerView` items draggable,
-simply by calling `setDraggable(true)` when you're building an adapter instance or later:
 
+### Handling Item Clicks
+**PrimeAdapter** helps you handle `RecyclerView` items click events,
+simply by calling `setItemClickListener()` with an `OnRecyclerViewItemClickListener` argument when you're building an adapter instance or later:
 ```kotlin
 val adapter = PrimeAdapter.with(recyclerView)
                 ...
-                .setDraggable(true) // or pass `false` for deactivation
+                .setItemClickListener(onRecyclerViewItemClickListener)
                 ...
                 .build(ActorAdapter::class.java)
                 
 ...
-adapter.setDraggable(true) // or pass `false` for deactivation
+adapter.setItemClickListener(onRecyclerViewItemClickListener)
+```
+
+### Draggability
+**PrimeAdapter** helps you make the `RecyclerView` items draggable.
+It would be activated (or not) by calling `setDraggable(true)` (or `setDraggable(false)`) on builder or adapter instance.
+If you want to get notified about item movements, it's possible by calling `setItemDragListener()` and passing an `OnRecyclerViewItemDragListener` instance to it.
+
+```kotlin
+adapter.setDraggable(true)
+adapter.setItemDragListener(onRecyclerViewItemDragListener)
 ```
 
 ### Expandability
@@ -94,14 +130,7 @@ adapter.setDraggable(true) // or pass `false` for deactivation
 simply by calling `setExpandable(true)` when you're building an adapter instance or later:
 
 ```kotlin
-val adapter = PrimeAdapter.with(recyclerView)
-                ...
-                .setExpandable(true) // or pass `false` for deactivation
-                ...
-                .build(ActorAdapter::class.java)
-                
-...
-adapter.setExpandable(true) // or pass `false` for deactivation
+adapter.setExpandable(true)
 ```
 
 ### Custom Skip Divider
@@ -118,34 +147,10 @@ val adapter = PrimeAdapter.with(recyclerView)
 ...
 adapter.setDivider() // or pass `setDivider(null)` for deactivation
 ```
+By default dividers are shown for all items except the last one.
+It's easy to hide an item's divider by setting `hasDivider` property to `false` on its data holder instance.
 
 Too learn more, see the [wiki][1].
-
-Download
---------
-Add the following lines to your `build.gradle` file:
-```gradle
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
-  
-repositories {
-    jcenter()
-}
-  
-dependencies {
-    implementation 'com.aminography:primeadapter:1.0.2'
-    compileOnly 'com.aminography:primeadapter-annotation:1.0.2'
-    kapt 'com.aminography:primeadapter-processor:1.0.2'
-}
-```
-
-* If you write code in Java, you should also add kotlin dependency too:
-```gradle
-dependencies {
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.70'
-}
-```
 
 License
 --------
