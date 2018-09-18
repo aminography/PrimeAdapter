@@ -95,7 +95,7 @@ dependencies {
 }
 ```
 
-#### Using PrimeAdapter in a Java Android project
+#### * Importatnt:
 If you write code in Java, you should also add kotlin dependency too:
 ```gradle
 dependencies {
