@@ -98,7 +98,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
 }
 ```
 
-Advanced Features
+Extra Features
 --------
 
 ### Handling Item Clicks
