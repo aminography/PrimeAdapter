@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                             fragment.setDraggable(isChecked);
                             break;
                         case R.id.dividerCheckBox:
-                            fragment.setDivider(isChecked);
+                            fragment.setHasDivider(isChecked);
                             break;
                     }
                 }
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 if (fragment != null) {
                     fragment.setExpandable(false);
                     fragment.setDraggable(false);
-                    fragment.setDivider(true);
+                    fragment.setHasDivider(true);
                 }
             }
         });

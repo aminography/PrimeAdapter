@@ -9,8 +9,8 @@ android {
     defaultConfig {
         minSdkVersion 9
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.0.2"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -60,7 +60,7 @@ ext {
 
     publishedGroupId = 'com.aminography'
     artifact = 'primeadapter'
-    libraryVersion = "1.0.1"
+    libraryVersion = "1.0.2"
 
     libraryName = 'PrimeAdapter'
     libraryDescription = 'PrimeAdapter makes working with RecyclerView easier.'
@@ -77,5 +77,5 @@ ext {
     allLicenses = ["Apache-2.0"]
 }
 
-apply from: rootProject.file('gradle/install-v1.gradle')
-apply from: rootProject.file('gradle/bintray-android-v1.gradle')
+apply from: rootProject.file('gradle/install.gradle')
+apply from: rootProject.file('gradle/bintray-android.gradle')

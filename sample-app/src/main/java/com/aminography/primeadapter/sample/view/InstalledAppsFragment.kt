@@ -43,13 +43,13 @@ class InstalledAppsFragment : Fragment(), OnRecyclerViewItemClickListener, OnRec
             adapter?.setDraggable(value)
         }
 
-    var divider: Boolean = true
+    var hasDivider: Boolean = true
         set(value) {
             field = value
             if (value) {
-                adapter?.setDividerDrawable(R.drawable.divier, insetLeft = UIUtils.dp2px(activity!!, 1F).toInt().times(72))
+                adapter?.setDivider(insetLeft = UIUtils.dp2px(activity!!, 72F).toInt())
             } else {
-                adapter?.setDividerDrawable(null)
+                adapter?.setDivider(null)
             }
         }
 
@@ -67,7 +67,7 @@ class InstalledAppsFragment : Fragment(), OnRecyclerViewItemClickListener, OnRec
                 .setItemClickListener(this)
                 .setItemDragListener(this)
                 .setLayoutManager(LinearLayoutManager(activity))
-                .setDividerDrawable(R.drawable.divier, insetLeft = UIUtils.dp2px(activity!!, 1F).toInt().times(72))
+                .setDivider(insetLeft = UIUtils.dp2px(activity!!, 72F).toInt())
                 .setHasFixedSize(true)
                 .setDraggable(false)
                 .setExpandable(false)

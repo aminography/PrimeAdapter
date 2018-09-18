@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
             when (view.id) {
                 R.id.expandableCheckBox -> fragment.expandable = isChecked
                 R.id.draggableCheckBox -> fragment.draggable = isChecked
-                R.id.dividerCheckBox -> fragment.divider = isChecked
+                R.id.dividerCheckBox -> fragment.hasDivider = isChecked
             }
         }
 
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
             }
             fragment.expandable = false
             fragment.draggable = false
-            fragment.divider = true
+            fragment.hasDivider = true
         }
     }
 

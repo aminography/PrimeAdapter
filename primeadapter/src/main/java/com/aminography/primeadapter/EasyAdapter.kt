@@ -1,9 +1,11 @@
 package com.aminography.primeadapter
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.InsetDrawable
-import android.support.annotation.DrawableRes
-import android.support.v4.content.ContextCompat
+import android.support.annotation.ColorInt
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -11,8 +13,8 @@ import android.support.v7.widget.SnapHelper
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.aminography.primeadapter.callback.PrimeDelegate
 import com.aminography.primeadapter.callback.OnRecyclerViewItemClickListener
+import com.aminography.primeadapter.callback.PrimeDelegate
 import com.aminography.primeadapter.divider.SkipDividerItemDecorator
 import com.aminography.primeadapter.draghelper.DragItemTouchHelperCallback
 import com.aminography.primeadapter.draghelper.ItemTouchHelperAdapter
@@ -115,19 +117,28 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
         notifyDataSetChanged()
     }
 
-    fun setDividerDrawable(@DrawableRes dividerDrawable: Int?, insetLeft: Int = 0, insetTop: Int = 0, insetRight: Int = 0, insetBottom: Int = 0) {
+    fun setDivider(dividerDrawable: Drawable?, insetLeft: Int = 0, insetTop: Int = 0, insetRight: Int = 0, insetBottom: Int = 0) {
         val itemDecorationCount = recyclerView?.itemDecorationCount ?: 0
         if (itemDecorationCount > 0) {
             recyclerView?.removeItemDecorationAt(0)
 //            for (i in 0..(itemDecorationCount - 1)) recyclerView?.removeItemDecorationAt(i)
         }
-        if (dividerDrawable != null && recyclerView?.layoutManager is LinearLayoutManager) {
-            ContextCompat.getDrawable(context, dividerDrawable)?.let {
+        if (recyclerView?.layoutManager is LinearLayoutManager) {
+            dividerDrawable?.let {
                 val insetDrawable = InsetDrawable(it, insetLeft, insetTop, insetRight, insetBottom)
                 val dividerItemDecoration = SkipDividerItemDecorator(insetDrawable)
                 recyclerView?.addItemDecoration(dividerItemDecoration)
             }
         }
+    }
+
+    fun setDivider(@ColorInt color: Int = Color.parseColor("#BDBDBD"), thickness: Int = 1, insetLeft: Int = 0, insetTop: Int = 0, insetRight: Int = 0, insetBottom: Int = 0) {
+        val dividerDrawable = GradientDrawable().apply {
+            shape = GradientDrawable.RECTANGLE
+            setSize(thickness, thickness)
+            setColor(color)
+        }
+        setDivider(dividerDrawable, insetLeft, insetTop, insetRight, insetBottom)
     }
 
     override fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
@@ -193,7 +204,7 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
         private var recycledViewPool: RecyclerView.RecycledViewPool? = null
         private var itemClickListener: OnRecyclerViewItemClickListener? = null
         private var itemDragListener: OnRecyclerViewItemDragListener? = null
-        private var dividerDrawable: Int? = null
+        private var dividerDrawable: Drawable? = null
         private var dividerDrawableInsetLeft: Int = 0
         private var dividerDrawableInsetTop: Int = 0
         private var dividerDrawableInsetRight: Int = 0
@@ -254,8 +265,21 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
             return this
         }
 
-        fun setDividerDrawable(@DrawableRes dividerDrawable: Int?, insetLeft: Int = 0, insetTop: Int = 0, insetRight: Int = 0, insetBottom: Int = 0): AdapterBuilder {
+        fun setDivider(dividerDrawable: Drawable?, insetLeft: Int = 0, insetTop: Int = 0, insetRight: Int = 0, insetBottom: Int = 0): AdapterBuilder {
             this.dividerDrawable = dividerDrawable
+            dividerDrawableInsetLeft = insetLeft
+            dividerDrawableInsetTop = insetTop
+            dividerDrawableInsetRight = insetRight
+            dividerDrawableInsetBottom = insetBottom
+            return this
+        }
+
+        fun setDivider(@ColorInt color: Int = Color.parseColor("#BDBDBD"), thickness: Int = 1, insetLeft: Int = 0, insetTop: Int = 0, insetRight: Int = 0, insetBottom: Int = 0): AdapterBuilder {
+            this.dividerDrawable = GradientDrawable().apply {
+                shape = GradientDrawable.RECTANGLE
+                setSize(thickness, thickness)
+                setColor(color)
+            }
             dividerDrawableInsetLeft = insetLeft
             dividerDrawableInsetTop = insetTop
             dividerDrawableInsetRight = insetRight
@@ -293,7 +317,7 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
                 t.setExpandable(it)
             }
             dividerDrawable.let {
-                t.setDividerDrawable(it, dividerDrawableInsetLeft, dividerDrawableInsetTop, dividerDrawableInsetRight, dividerDrawableInsetBottom)
+                t.setDivider(it, dividerDrawableInsetLeft, dividerDrawableInsetTop, dividerDrawableInsetRight, dividerDrawableInsetBottom)
             }
 
             if (set) {

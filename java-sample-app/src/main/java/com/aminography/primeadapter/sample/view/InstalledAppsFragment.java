@@ -2,6 +2,7 @@ package com.aminography.primeadapter.sample.view;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -60,7 +61,7 @@ public class InstalledAppsFragment extends Fragment implements OnRecyclerViewIte
                 .setItemClickListener(this)
                 .setItemDragListener(this)
                 .setLayoutManager(new LinearLayoutManager(getActivity()))
-                .setDividerDrawable(R.drawable.divier, (int) (UIUtils.dp2px(getActivity(), 1F) * 72), 0, 0, 0)
+                .setDivider(Color.parseColor("#BDBDBD"), 1, (int) UIUtils.dp2px(getActivity(), 72F), 0, 0, 0)
                 .setHasFixedSize(true)
                 .setDraggable(false)
                 .setExpandable(false)
@@ -101,11 +102,11 @@ public class InstalledAppsFragment extends Fragment implements OnRecyclerViewIte
         adapter.setDraggable(draggable);
     }
 
-    public void setDivider(boolean divider) {
-        if (divider) {
-            adapter.setDividerDrawable(R.drawable.divier, (int) (UIUtils.dp2px(getActivity(), 1F) * 72), 0, 0, 0);
+    public void setHasDivider(boolean hasDivider) {
+        if (hasDivider) {
+            adapter.setDivider(Color.parseColor("#BDBDBD"), 1, (int) UIUtils.dp2px(getActivity(), 72F), 0, 0, 0);
         } else {
-            adapter.setDividerDrawable(null, 0, 0, 0, 0);
+            adapter.setDivider(null, 0, 0, 0, 0);
         }
     }
 
