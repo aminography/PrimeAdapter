@@ -139,7 +139,7 @@ To see how to implement it, please check the [related example class][2].
 Showing custom divider lines is a good feature that **PrimeAdapter** provides.
 Calling the `setDivider()` on a builder or on adapter instance leads to show default divider line between items.
 It's possible to pass it a custom `Drawable` instance or simply a color to change the divider looking.
-Also we can set inset for dividers in pixels.
+Also we can set inset for divider drawables in pixels.
 
 ```kotlin
 //----- default divider:
