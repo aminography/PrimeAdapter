@@ -1,5 +1,5 @@
 # PrimeAdapter :zap:
-[![Android Arsenal]( https://img.shields.io/badge/Android%20Arsenal-PrimeAdapter-ffcc00.svg?style=flat )]( https://android-arsenal.com/details/1/?)
+[![Android Arsenal]( https://img.shields.io/badge/Android%20Arsenal-PrimeAdapter-ffaa00.svg?style=flat )]( https://android-arsenal.com/details/1/?)
 [![API](https://img.shields.io/badge/API-9%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=9)
 [![Download](https://api.bintray.com/packages/aminography/maven/PrimeAdapter/images/download.svg) ](https://bintray.com/aminography/maven/PrimeAdapter/_latestVersion)
   
@@ -22,7 +22,7 @@ data class ActorDataHolder(
 ) : PrimeDataHolder()
 ```
  
-2. Each view holder class should inherits from `PrimeViewHolder` and specify related data holder as type parameter like following:
+2. Each view holder class should inherit from `PrimeViewHolder` and specify related data holder as a type parameter like following:
 
 ```kotlin
 class ActorViewHolder(
@@ -37,7 +37,7 @@ class ActorViewHolder(
 }
 ```
   
-3. Your custom adapter class must inherits from `PrimeAdapter` that decides to make view holder instance according to appropriate data holder.
+3. Your custom adapter class must inherit from `PrimeAdapter` that decides to make view holder instance according to appropriate data holder.
 Follow this pattern:
 
 ```kotlin
@@ -95,8 +95,7 @@ dependencies {
 }
 ```
 
-### Using PrimeAdapter in Java Android project
-If you write code in Java, you should also add kotlin dependency too:
+* If you write code in Java, you should also add kotlin dependency too:
 ```gradle
 dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.70'
