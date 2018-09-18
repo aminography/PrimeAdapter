@@ -133,7 +133,7 @@ Calling the `setExpandable(true)`/`setExpandable(false)` on a builder or on adap
 adapter.setExpandable(true)
 ```
 
-To see how to implement it, please check the [related example class][2].
+To see how to implement it, please check the [related example code][2].
 
 ### Custom Skippable Divider
 Showing custom divider lines is a good feature that **PrimeAdapter** provides.
