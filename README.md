@@ -135,7 +135,7 @@ adapter.setExpandable(true)
 
 To see how to implement it, please check the [related example class][2].
 
-### Custom Skip Divider
+### Custom Skippable Divider
 Showing custom divider lines is a good feature that **PrimeAdapter** provides.
 Calling the `setDivider()` on a builder or on adapter instance leads to show default divider line between items.
 It's possible to pass it a custom `Drawable` instance or simply a color to change the divider looking.
@@ -158,8 +158,6 @@ adapter.setDivider(null)
 ```
 By default dividers are shown for all items except the last one.
 It's easy to skip some items divider by setting `hasDivider` property to `false` on their data holder instances.
-
-To learn more, see the [wiki][1].
 
 License
 --------
