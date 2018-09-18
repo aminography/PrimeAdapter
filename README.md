@@ -118,7 +118,7 @@ adapter.setItemClickListener(onRecyclerViewItemClickListener)
 ### Draggability
 **PrimeAdapter** helps you make the `RecyclerView` items draggable.
 It would be activated/deactivated by calling `setDraggable(true)`/`setDraggable(false)` on builder or adapter instance.
-If you want to get notified about item movements, it's possible by calling `setItemDragListener()` and passing an `OnRecyclerViewItemDragListener` instance to it.
+Optionally, you can get notified about item movements by calling `setItemDragListener()` and passing an `OnRecyclerViewItemDragListener` instance to it.
 
 ```kotlin
 adapter.setDraggable(true)
@@ -126,8 +126,8 @@ adapter.setItemDragListener(onRecyclerViewItemDragListener)
 ```
 
 ### Expandability
-**PrimeAdapter** helps you make the `RecyclerView` items expandable,
-simply by calling `setExpandable(true)` when you're building an adapter instance or later:
+Another feature of **PrimeAdapter** is making the implementation of `RecyclerView` items expandability easier.
+Calling `setExpandable(true)`/`setExpandable(false)` on builder or adapter instance changes its activation.
 
 ```kotlin
 adapter.setExpandable(true)
