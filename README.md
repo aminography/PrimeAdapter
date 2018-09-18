@@ -1,5 +1,5 @@
 # PrimeAdapter :zap:
-[![Android Arsenal]( https://img.shields.io/badge/Android%20Arsenal-PrimeAdapter-C50000.svg?style=flat )]( https://android-arsenal.com/details/1/?)
+[![Android Arsenal]( https://img.shields.io/badge/Android%20Arsenal-PrimeAdapter-ff5500.svg?style=flat )]( https://android-arsenal.com/details/1/?)
 [![API](https://img.shields.io/badge/API-9%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=9)
 [![Download](https://api.bintray.com/packages/aminography/maven/PrimeAdapter/images/download.svg) ](https://bintray.com/aminography/maven/PrimeAdapter/_latestVersion)
   
