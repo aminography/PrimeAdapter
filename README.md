@@ -117,7 +117,7 @@ adapter.setItemClickListener(onRecyclerViewItemClickListener)
 
 ### Draggability
 **PrimeAdapter** helps you make the `RecyclerView` items draggable.
-It would be activated (or not) by calling `setDraggable(true)` (or `setDraggable(false)`) on builder or adapter instance.
+It would be activated/deactivated by calling `setDraggable(true)`/`setDraggable(false)` on builder or adapter instance.
 If you want to get notified about item movements, it's possible by calling `setItemDragListener()` and passing an `OnRecyclerViewItemDragListener` instance to it.
 
 ```kotlin
