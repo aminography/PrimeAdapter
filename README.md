@@ -95,8 +95,7 @@ dependencies {
 }
 ```
 
-### * Importatnt
-If you write code in Java, you should also add kotlin dependency too:
+* If you write code in Java, you should also add kotlin dependency too:
 ```gradle
 dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.70'
