@@ -103,7 +103,7 @@ Extra Features
 
 ### Handling Item Clicks
 **PrimeAdapter** helps you handle `RecyclerView` items click events,
-simply by calling `setItemClickListener()` with an `OnRecyclerViewItemClickListener` argument when you're building an adapter instance or later:
+simply by `setItemClickListener()` with an `OnRecyclerViewItemClickListener` argument when you're building an adapter instance or later:
 ```kotlin
 val adapter = PrimeAdapter.with(recyclerView)
                 ...
