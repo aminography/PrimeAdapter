@@ -141,10 +141,20 @@ Calling the `setDivider()` on a builder or on adapter instance leads to show def
 It's possible to pass it a custom `Drawable` instance or simply a color to change the divider looking.
 
 ```kotlin
-adapter.setDivider() // or pass `setDivider(null)` for deactivation
+//----- default divider:
+adapter.setDivider()
+  
+//----- divider with custom drawable:
 adapter.setDivider(ContextCompat.getDrawable(context, R.drawable.divider))
+  
+//----- divider with custom color:
 adapter.setDivider(Color.RED)
-adapter.setDivider(Color.RED, insetLeft = 16, insetRight = 16) // with custom inset in pixels
+  
+//----- divider with custom color and custom inset:
+adapter.setDivider(Color.RED, insetLeft = 16, insetRight = 16)
+  
+//----- deactivate dividers:
+adapter.setDivider(null)
 ```
 By default dividers are shown for all items except the last one.
 It's easy to skip some items divider by setting `hasDivider` property to `false` on their data holder instances.
