@@ -95,7 +95,7 @@ dependencies {
 }
 ```
 
-#### * Importatnt:
+### * Importatnt
 If you write code in Java, you should also add kotlin dependency too:
 ```gradle
 dependencies {
