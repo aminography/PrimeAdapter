@@ -9,6 +9,7 @@ You can use **PrimeAdapter** in both [Kotlin](https://github.com/aminography/Pri
   
 ![](static/prime_logo.png)
 ![](https://media.giphy.com/media/mzhpG2SByqHtrSLCZ8/giphy.gif)
+![](https://media.giphy.com/media/TamHIVOnBDk1m1vdUd/giphy.gif)
   
 Download
 --------
