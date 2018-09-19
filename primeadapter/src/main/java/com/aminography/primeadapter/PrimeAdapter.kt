@@ -40,6 +40,7 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
     protected var recycledViewPool: RecyclerView.RecycledViewPool? = null
     private var isDraggable: Boolean = false
     private var isExpandable: Boolean = false
+    private var isSwipeToDismissEnabled: Boolean = false
 
     override fun onBindViewHolder(viewHolder: PrimeViewHolder<PrimeDataHolder>, position: Int) {
         val dataHolder = dataList[position]
@@ -75,8 +76,23 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
 
     fun setDraggable(isDraggable: Boolean) {
         this.isDraggable = isDraggable
-        if (isDraggable && itemTouchHelper == null) {
+        if (isDraggable) initItemTouchHelper()
+    }
+
+    fun setIsSwipeToDismissEnabled(isSwipeToDismissEnabled: Boolean) {
+        this.isSwipeToDismissEnabled = isSwipeToDismissEnabled
+        if (isSwipeToDismissEnabled) initItemTouchHelper()
+    }
+
+    private fun initItemTouchHelper() {
+        if (itemTouchHelper == null) {
             val itemTouchHelperCallback = object : IDragHelperCallback {
+
+                override fun isOnlySameViewTypeCanReplaceable(): Boolean = true
+
+                override fun isLongPressDragEnabled(): Boolean = false
+
+                override fun isItemViewSwipeEnabled(): Boolean = isSwipeToDismissEnabled
 
                 override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
                     dataList.add(toPosition, dataList.removeAt(fromPosition))
@@ -209,6 +225,7 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
         private var isNestedScrollingEnabled: Boolean? = null
         private var isDraggable: Boolean? = null
         private var isExpandable: Boolean? = null
+        private var isSwipeToDismissEnabled: Boolean? = null
         private var set: Boolean = false
 
         fun set(): AdapterBuilder {
@@ -228,6 +245,11 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
 
         fun setExpandable(isExpandable: Boolean): AdapterBuilder {
             this.isExpandable = isExpandable
+            return this
+        }
+
+        fun setIsSwipeToDismissEnabled(isSwipeToDismissEnabled: Boolean): AdapterBuilder {
+            this.isSwipeToDismissEnabled = isSwipeToDismissEnabled
             return this
         }
 
@@ -311,6 +333,9 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
             }
             isExpandable?.let {
                 t.setExpandable(it)
+            }
+            isSwipeToDismissEnabled?.let {
+                t.setIsSwipeToDismissEnabled(it)
             }
             dividerDrawable.let {
                 t.setDivider(it, dividerDrawableInsetLeft, dividerDrawableInsetTop, dividerDrawableInsetRight, dividerDrawableInsetBottom)

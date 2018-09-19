@@ -79,7 +79,7 @@ abstract class PrimeViewHolder<T : PrimeDataHolder>(
     protected fun isExpandable(): Boolean = adapterDelegate.isExpandable()
 
     override fun onItemDragged() {
-        itemView.setBackgroundColor(Color.parseColor("#727272"))
+        itemView.setBackgroundColor(Color.parseColor("#DFDFDF"))
     }
 
     override fun onItemReleased() {
