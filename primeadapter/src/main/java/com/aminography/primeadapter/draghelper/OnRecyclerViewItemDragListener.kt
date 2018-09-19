@@ -6,4 +6,6 @@ package com.aminography.primeadapter.draghelper
 interface OnRecyclerViewItemDragListener {
 
     fun onItemMoved(fromPosition: Int, toPosition: Int)
+
+    fun onItemSwiped(position: Int, direction: Int)
 }

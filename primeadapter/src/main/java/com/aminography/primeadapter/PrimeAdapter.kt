@@ -41,6 +41,8 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
     private var isDraggable: Boolean = false
     private var isExpandable: Boolean = false
     private var isSwipeToDismissEnabled: Boolean = false
+    private var isLongPressDragEnabled: Boolean = false
+    private var isOnlySameViewTypeCanReplaceable: Boolean = true
 
     override fun onBindViewHolder(viewHolder: PrimeViewHolder<PrimeDataHolder>, position: Int) {
         val dataHolder = dataList[position]
@@ -84,17 +86,26 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
         if (isSwipeToDismissEnabled) initItemTouchHelper()
     }
 
+    fun setIsLongPressDragEnabled(isLongPressDragEnabled: Boolean) {
+        this.isLongPressDragEnabled = isLongPressDragEnabled
+        if (isLongPressDragEnabled) initItemTouchHelper()
+    }
+
+    fun setIsOnlySameViewTypeCanReplaceable(isOnlySameViewTypeCanReplaceable: Boolean) {
+        this.isOnlySameViewTypeCanReplaceable = isOnlySameViewTypeCanReplaceable
+    }
+
     private fun initItemTouchHelper() {
         if (itemTouchHelper == null) {
             val itemTouchHelperCallback = object : IDragHelperCallback {
 
-                override fun isOnlySameViewTypeCanReplaceable(): Boolean = true
+                override fun isOnlySameViewTypeCanReplaceable(): Boolean = isOnlySameViewTypeCanReplaceable
 
-                override fun isLongPressDragEnabled(): Boolean = false
+                override fun isLongPressDragEnabled(): Boolean = isLongPressDragEnabled
 
                 override fun isItemViewSwipeEnabled(): Boolean = isSwipeToDismissEnabled
 
-                override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
+                override fun onItemMoved(fromPosition: Int, toPosition: Int): Boolean {
                     dataList.add(toPosition, dataList.removeAt(fromPosition))
 
                     if (fromPosition < toPosition) for (i in fromPosition..toPosition) dataList[i].listPosition = i
@@ -107,6 +118,7 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
 
                 override fun onItemSwiped(position: Int, direction: Int) {
                     removeItem(position, true)
+                    itemDragListener?.onItemSwiped(position, direction)
                 }
             }
 
@@ -226,6 +238,8 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
         private var isDraggable: Boolean? = null
         private var isExpandable: Boolean? = null
         private var isSwipeToDismissEnabled: Boolean? = null
+        private var isLongPressDragEnabled: Boolean? = null
+        private var isOnlySameViewTypeCanReplaceable: Boolean? = null
         private var set: Boolean = false
 
         fun set(): AdapterBuilder {
@@ -250,6 +264,16 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
 
         fun setIsSwipeToDismissEnabled(isSwipeToDismissEnabled: Boolean): AdapterBuilder {
             this.isSwipeToDismissEnabled = isSwipeToDismissEnabled
+            return this
+        }
+
+        fun setIsLongPressDragEnabled(isLongPressDragEnabled: Boolean): AdapterBuilder {
+            this.isLongPressDragEnabled = isLongPressDragEnabled
+            return this
+        }
+
+        fun setIsOnlySameViewTypeCanReplaceable(isOnlySameViewTypeCanReplaceable: Boolean): AdapterBuilder {
+            this.isOnlySameViewTypeCanReplaceable = isOnlySameViewTypeCanReplaceable
             return this
         }
 
@@ -336,6 +360,12 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
             }
             isSwipeToDismissEnabled?.let {
                 t.setIsSwipeToDismissEnabled(it)
+            }
+            isLongPressDragEnabled?.let {
+                t.setIsLongPressDragEnabled(it)
+            }
+            isOnlySameViewTypeCanReplaceable?.let {
+                t.setIsOnlySameViewTypeCanReplaceable(it)
             }
             dividerDrawable.let {
                 t.setDivider(it, dividerDrawableInsetLeft, dividerDrawableInsetTop, dividerDrawableInsetRight, dividerDrawableInsetBottom)

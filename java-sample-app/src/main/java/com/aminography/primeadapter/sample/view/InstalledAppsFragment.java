@@ -119,13 +119,18 @@ public class InstalledAppsFragment extends Fragment implements OnRecyclerViewIte
 
     @Override
     public void onItemLongClick(@NotNull PrimeDataHolder primeDataHolder) {
-
     }
 
     @Override
     public void onItemMoved(int fromPosition, int toPosition) {
         // -1 because title row does not exist in dataList
         dataList.add(toPosition - 1, dataList.remove(fromPosition - 1));
+    }
+
+    @Override
+    public void onItemSwiped(int position, int direction) {
+        // -1 because title row does not exist in dataList
+        dataList.remove(position - 1);
     }
 
 }

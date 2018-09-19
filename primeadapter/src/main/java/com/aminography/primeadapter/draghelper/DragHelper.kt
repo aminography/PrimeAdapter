@@ -34,7 +34,7 @@ internal class DragHelper(private val callback: IDragHelperCallback) : ItemTouch
         return if (callback.isOnlySameViewTypeCanReplaceable() && source.itemViewType != target.itemViewType) {
             false
         } else {
-            callback.onItemMove(source.adapterPosition, target.adapterPosition)
+            callback.onItemMoved(source.adapterPosition, target.adapterPosition)
             true
         }
     }

@@ -9,8 +9,6 @@ android {
     defaultConfig {
         minSdkVersion 11
         targetSdkVersion 28
-        versionCode 3
-        versionName "1.0.3"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -60,7 +58,7 @@ ext {
 
     publishedGroupId = 'com.aminography'
     artifact = 'primeadapter'
-    libraryVersion = "1.0.2"
+    libraryVersion = "1.0.4"
 
     libraryName = 'PrimeAdapter'
     libraryDescription = 'PrimeAdapter makes working with RecyclerView easier.'

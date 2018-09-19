@@ -96,11 +96,6 @@ class InstalledAppsFragment : Fragment(), OnRecyclerViewItemClickListener, OnRec
         progressBar.animate().setDuration(500).alpha(if (list.isEmpty()) 1F else 0F).start()
     }
 
-    override fun onItemMoved(fromPosition: Int, toPosition: Int) {
-        // -1 because title row does not exist in dataList
-        dataList?.add(toPosition - 1, dataList!!.removeAt(fromPosition - 1))
-    }
-
     override fun onItemClick(primeDataHolder: PrimeDataHolder) {
         if (primeDataHolder is InstalledAppListDataHolder) {
             PackageUtils.openApplication(activity!!, primeDataHolder.installedAppData.packageIdentifier)
@@ -108,6 +103,16 @@ class InstalledAppsFragment : Fragment(), OnRecyclerViewItemClickListener, OnRec
     }
 
     override fun onItemLongClick(primeDataHolder: PrimeDataHolder) {
+    }
+
+    override fun onItemMoved(fromPosition: Int, toPosition: Int) {
+        // -1 because title row does not exist in dataList
+        dataList?.add(toPosition - 1, dataList!!.removeAt(fromPosition - 1))
+    }
+
+    override fun onItemSwiped(position: Int, direction: Int) {
+        // -1 because title row does not exist in dataList
+        dataList?.removeAt(position - 1)
     }
 
 }

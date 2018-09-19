@@ -5,7 +5,7 @@ package com.aminography.primeadapter.draghelper
  */
 internal interface IDragHelperCallback {
 
-    fun onItemMove(fromPosition: Int, toPosition: Int): Boolean
+    fun onItemMoved(fromPosition: Int, toPosition: Int): Boolean
 
     fun onItemSwiped(position: Int, direction: Int)
 
