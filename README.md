@@ -8,7 +8,7 @@ It brings simplicity when you have multiple view types in a `RecyclerView`.
 You can use **PrimeAdapter** in both [Kotlin](https://github.com/aminography/PrimeAdapter/tree/master/sample-app) and [Java](https://github.com/aminography/PrimeAdapter/tree/master/java-sample-app) Android projects as the sample apps are written.
   
 ![](static/prime_logo.png)
-![](https://media.giphy.com/media/33G9QVx7FBpaGqET3K/giphy.gif)
+![](https://media.giphy.com/media/mzhpG2SByqHtrSLCZ8/200w_d.gif)
   
 Download
 --------
