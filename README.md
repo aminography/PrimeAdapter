@@ -139,6 +139,19 @@ adapter.setItemDragListener(object: OnRecyclerViewItemDragListener{
     }
 })
 ```
+It is necessary to introduce a view as handle of dragging in draggable view holders: 
+
+```kotlin
+class ActorViewHolder(
+        delegate: PrimeDelegate
+) : PrimeViewHolder<ActorDataHolder>(delegate, R.layout.list_item) {
+  
+    init {
+        setDragHandle(itemView)
+    }
+    ...
+}
+```
 
 ### Expandability
 Another feature of **PrimeAdapter** is making the implementation of `RecyclerView` items expansion easier.

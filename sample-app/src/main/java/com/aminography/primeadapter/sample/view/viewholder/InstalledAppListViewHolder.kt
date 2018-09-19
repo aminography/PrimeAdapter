@@ -16,6 +16,10 @@ class InstalledAppListViewHolder(
         delegate: PrimeDelegate
 ) : PrimeViewHolder<InstalledAppListDataHolder>(delegate, R.layout.list_item_installed_app_list) {
 
+    init {
+        setDragHandle(itemView)
+    }
+
     override fun bindDataToView(dataHolder: InstalledAppListDataHolder) {
         with(itemView) {
             dataHolder.apply {
@@ -38,7 +42,6 @@ class InstalledAppListViewHolder(
                 expansionImageButton.setOnClickListener { toggleExpansion() }
                 expansionImageButton.visibility = if (isExpandable()) View.VISIBLE else View.GONE
             }
-            setDragHandle(itemView)
         }
     }
 
