@@ -3,12 +3,15 @@
 [![API](https://img.shields.io/badge/API-11%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=11)
 [![Download](https://api.bintray.com/packages/aminography/maven/PrimeAdapter/images/download.svg) ](https://bintray.com/aminography/maven/PrimeAdapter/_latestVersion)
   
-**PrimeAdapter** makes working with `RecyclerView` easier by separating needed codes in some simple clean classes.
+**PrimeAdapter** makes working with `RecyclerView` easier by separating required code in some simple clean classes.
 It brings simplicity when you have multiple view types in a `RecyclerView`.
 You can use **PrimeAdapter** in both [Kotlin](https://github.com/aminography/PrimeAdapter/tree/master/sample-app) and [Java](https://github.com/aminography/PrimeAdapter/tree/master/java-sample-app) Android projects as the sample apps are written.
   
 ![](static/prime_logo.png)
-![](https://media.giphy.com/media/33G9QVx7FBpaGqET3K/giphy.gif)
+  
+| Custom Divider | Draggability | Expandability | 
+| --- | --- | --- | 
+![Example](https://media.giphy.com/media/mzhpG2SByqHtrSLCZ8/giphy.gif) | ![Example](https://media.giphy.com/media/64amX8wGab3BY8czuS/giphy.gif) | ![Example](https://media.giphy.com/media/TamHIVOnBDk1m1vdUd/giphy.gif) | 
   
 Download
 --------
@@ -64,7 +67,7 @@ class ActorViewHolder(
 }
 ```
   
-3. Your custom adapter class must inherit from `PrimeAdapter` that decides to make view holder instance according to data holder type.
+3. Your custom adapter class must inherit from `PrimeAdapter` that decides to make view holder instance based on data holder type.
 Follow this pattern:
 
 ```kotlin
