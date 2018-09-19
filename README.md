@@ -3,7 +3,7 @@
 [![API](https://img.shields.io/badge/API-9%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=9)
 [![Download](https://api.bintray.com/packages/aminography/maven/PrimeAdapter/images/download.svg) ](https://bintray.com/aminography/maven/PrimeAdapter/_latestVersion)
   
-**PrimeAdapter** makes working with `RecyclerView` easier by separating needed codes in some simple clean classes.
+**PrimeAdapter** makes working with `RecyclerView` easier by separating required code in some simple clean classes.
 It brings simplicity when you have multiple view types in a `RecyclerView`.
 You can use **PrimeAdapter** in both [Kotlin](https://github.com/aminography/PrimeAdapter/tree/master/sample-app) and [Java](https://github.com/aminography/PrimeAdapter/tree/master/java-sample-app) Android projects as the sample apps are written.
   
