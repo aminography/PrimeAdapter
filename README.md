@@ -139,7 +139,7 @@ adapter.setItemDragListener(object: OnRecyclerViewItemDragListener{
     }
 })
 ```
-It is necessary to introduce a view as handle of dragging in draggable view holders: 
+It is necessary to introduce a view as handle of dragging in view holders which are going to be draggable: 
 
 ```kotlin
 class ActorViewHolder(
