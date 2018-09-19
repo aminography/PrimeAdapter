@@ -5,6 +5,7 @@ import android.support.annotation.LayoutRes
 import android.support.v4.view.MotionEventCompat
 import android.support.v7.widget.RecyclerView
 import android.view.MotionEvent
+import android.view.View
 import com.aminography.primeadapter.callback.PrimeDelegate
 import com.aminography.primeadapter.draghelper.ItemTouchHelperViewHolder
 import com.aminography.primeadapter.tools.consume
@@ -32,19 +33,6 @@ abstract class PrimeViewHolder<T : PrimeDataHolder>(
         }
 
     init {
-        itemView.setOnTouchListener { _, event ->
-            if (adapterDelegate.isDraggable()) {
-                @Suppress("DEPRECATION")
-                when (MotionEventCompat.getActionMasked(event)) {
-                    MotionEvent.ACTION_DOWN -> adapterDelegate.onStartDrag(this)
-                    MotionEvent.ACTION_UP -> {
-                        adapterDelegate.ontDragReleased(this)
-                    }
-                }
-            }
-            false
-        }
-
         adapterDelegate.getOnItemClickListener()?.let { listener ->
             itemView.apply {
                 setOnClickListener { _ ->
@@ -65,6 +53,21 @@ abstract class PrimeViewHolder<T : PrimeDataHolder>(
 
     protected abstract fun bindDataToView(dataHolder: T)
 
+    protected fun setDragHandle(view: View) {
+        view.setOnTouchListener { _, event ->
+            if (adapterDelegate.isDraggable()) {
+                @Suppress("DEPRECATION")
+                when (MotionEventCompat.getActionMasked(event)) {
+                    MotionEvent.ACTION_DOWN -> adapterDelegate.onStartDrag(this)
+                    MotionEvent.ACTION_UP -> {
+                        adapterDelegate.ontDragReleased(this)
+                    }
+                }
+            }
+            false
+        }
+    }
+
     protected fun toggleExpansion() {
         dataHolder?.apply {
             adapterDelegate.toggleExpansion(this)
@@ -76,7 +79,7 @@ abstract class PrimeViewHolder<T : PrimeDataHolder>(
     protected fun isExpandable(): Boolean = adapterDelegate.isExpandable()
 
     override fun onItemDragged() {
-        itemView.setBackgroundColor(Color.LTGRAY)
+        itemView.setBackgroundColor(Color.parseColor("#727272"))
     }
 
     override fun onItemReleased() {

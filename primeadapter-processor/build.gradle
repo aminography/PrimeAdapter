@@ -36,7 +36,7 @@ ext {
 
     publishedGroupId = 'com.aminography'
     artifact = 'primeadapter-processor'
-    libraryVersion = "1.0.2"
+    libraryVersion = "1.0.3"
 
     libraryName = 'PrimeAdapter'
     libraryDescription = 'PrimeAdapter makes working with RecyclerView easier.'

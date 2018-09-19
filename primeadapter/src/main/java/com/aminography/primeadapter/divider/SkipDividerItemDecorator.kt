@@ -41,7 +41,7 @@ internal class SkipDividerItemDecorator(private val divider: Drawable? = null) :
         for (i in 0 until childCount) {
             val child = parent.getChildAt(i)
             val position = parent.getChildAdapterPosition(child)
-            if (position != parent.adapter!!.itemCount - 1 && (parent.adapter as PrimeAdapter).getItem(position).hasDivider) {
+            if (position != RecyclerView.NO_POSITION && position != parent.adapter!!.itemCount - 1 && (parent.adapter as PrimeAdapter).getItem(position).hasDivider) {
                 parent.getDecoratedBoundsWithMargins(child, bounds)
                 val bottom = bounds.bottom + Math.round(child.translationY)
                 divider?.apply {
@@ -72,7 +72,7 @@ internal class SkipDividerItemDecorator(private val divider: Drawable? = null) :
         for (i in 0 until childCount) {
             val child = parent.getChildAt(i)
             val position = parent.getChildAdapterPosition(child)
-            if (position != parent.adapter!!.itemCount - 1 && (parent.adapter as PrimeAdapter).getItem(position).hasDivider) {
+            if (position != RecyclerView.NO_POSITION && position != parent.adapter!!.itemCount - 1 && (parent.adapter as PrimeAdapter).getItem(position).hasDivider) {
                 parent.layoutManager!!.getDecoratedBoundsWithMargins(child, bounds)
                 val right = bounds.right + Math.round(child.translationX)
                 divider?.apply {
@@ -88,7 +88,7 @@ internal class SkipDividerItemDecorator(private val divider: Drawable? = null) :
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         if (orientation == null) orientation = getOrientation(parent)
         val position = parent.getChildAdapterPosition(view)
-        if (position != parent.adapter!!.itemCount - 1 && (parent.adapter as PrimeAdapter).getItem(position).hasDivider) {
+        if (position != RecyclerView.NO_POSITION && position != parent.adapter!!.itemCount - 1 && (parent.adapter as PrimeAdapter).getItem(position).hasDivider) {
             if (divider == null) {
                 outRect.set(0, 0, 0, 0)
                 return

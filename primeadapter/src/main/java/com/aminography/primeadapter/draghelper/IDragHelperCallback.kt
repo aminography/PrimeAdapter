@@ -3,9 +3,9 @@ package com.aminography.primeadapter.draghelper
 /**
  * Created by aminography on 8/19/2018.
  */
-internal interface ItemTouchHelperAdapter {
+internal interface IDragHelperCallback {
 
     fun onItemMove(fromPosition: Int, toPosition: Int): Boolean
 
-    fun onItemDismiss(position: Int)
+    fun onItemSwiped(position: Int, direction: Int)
 }

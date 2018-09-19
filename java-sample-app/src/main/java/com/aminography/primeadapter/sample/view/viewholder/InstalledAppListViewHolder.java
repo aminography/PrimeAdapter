@@ -37,6 +37,7 @@ public class InstalledAppListViewHolder extends PrimeViewHolder<InstalledAppList
         appSizeTextView = itemView.findViewById(R.id.appSizeTextView);
         bottomTextView = itemView.findViewById(R.id.bottomTextView);
         expansionImageButton = itemView.findViewById(R.id.expansionImageButton);
+        setDragHandle(itemView);
     }
 
     @Override

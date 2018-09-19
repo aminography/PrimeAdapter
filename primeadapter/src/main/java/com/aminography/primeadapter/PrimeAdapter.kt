@@ -16,11 +16,12 @@ import android.view.ViewGroup
 import com.aminography.primeadapter.callback.OnRecyclerViewItemClickListener
 import com.aminography.primeadapter.callback.PrimeDelegate
 import com.aminography.primeadapter.divider.SkipDividerItemDecorator
-import com.aminography.primeadapter.draghelper.DragItemTouchHelperCallback
-import com.aminography.primeadapter.draghelper.ItemTouchHelperAdapter
+import com.aminography.primeadapter.draghelper.DragHelper
+import com.aminography.primeadapter.draghelper.IDragHelperCallback
 import com.aminography.primeadapter.draghelper.OnRecyclerViewItemDragListener
 import com.aminography.primeadapter.exception.ViewHolderNotFoundException
 import com.aminography.primeadapter.tools.PrimeAdapterUtils
+import java.util.*
 
 
 /**
@@ -33,8 +34,8 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
     private var dataList: MutableList<PrimeDataHolder> = ArrayList()
     private var itemClickListener: OnRecyclerViewItemClickListener? = null
     private var itemDragListener: OnRecyclerViewItemDragListener? = null
-    private var itemTouchHelperAdapter: ItemTouchHelperAdapter? = null
     private var itemTouchHelper: ItemTouchHelper? = null
+    private var dragHelper: DragHelper? = null
     private var recyclerView: RecyclerView? = null
     protected var recycledViewPool: RecyclerView.RecycledViewPool? = null
     private var isDraggable: Boolean = false
@@ -75,27 +76,27 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
     fun setDraggable(isDraggable: Boolean) {
         this.isDraggable = isDraggable
         if (isDraggable && itemTouchHelper == null) {
-            itemTouchHelperAdapter = object : ItemTouchHelperAdapter {
+            val itemTouchHelperCallback = object : IDragHelperCallback {
 
                 override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
                     dataList.add(toPosition, dataList.removeAt(fromPosition))
-                    dataList[fromPosition].listPosition = fromPosition
-                    dataList[toPosition].listPosition = toPosition
+
+                    if (fromPosition < toPosition) for (i in fromPosition..toPosition) dataList[i].listPosition = i
+                    else for (i in toPosition..fromPosition) dataList[i].listPosition = i
+
                     notifyItemMoved(fromPosition, toPosition)
                     itemDragListener?.onItemMoved(fromPosition, toPosition)
                     return true
                 }
 
-                override fun onItemDismiss(position: Int) {
-                    dataList.removeAt(position)
-                    notifyItemRemoved(position)
+                override fun onItemSwiped(position: Int, direction: Int) {
+                    removeItem(position, true)
                 }
             }
 
-            val callback = DragItemTouchHelperCallback(itemTouchHelperAdapter!!)
-            itemTouchHelper = ItemTouchHelper(callback)
+            dragHelper = DragHelper(itemTouchHelperCallback)
+            itemTouchHelper = ItemTouchHelper(dragHelper!!)
             itemTouchHelper?.attachToRecyclerView(recyclerView)
-            notifyDataSetChanged()
         }
     }
 
@@ -157,7 +158,8 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
 
     fun addItem(dataHolder: PrimeDataHolder, position: Int = 0, animate: Boolean = true) {
         dataList.add(position, dataHolder)
-        rePositionItems()
+        for (i in position..(dataList.size - 1)) dataList[i].listPosition = i
+
         if (animate) {
             notifyItemInserted(position)
         } else {
@@ -169,7 +171,8 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
 
     fun removeItem(position: Int, animate: Boolean) {
         dataList.removeAt(position)
-        rePositionItems()
+        for (i in position..(dataList.size - 1)) dataList[i].listPosition = i
+
         if (animate) {
             notifyItemRemoved(position)
         } else {
@@ -181,13 +184,6 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
         val position = dataHolder.listPosition
         if (position != RecyclerView.NO_POSITION) {
             removeItem(position, animate)
-        }
-    }
-
-    private fun rePositionItems() {
-        for (i in dataList.indices) {
-            val viewModel = dataList[i]
-            viewModel.listPosition = i
         }
     }
 

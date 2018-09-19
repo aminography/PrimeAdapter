@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.list_item_installed_app_list.view.*
  * Created by aminography on 8/17/2018.
  */
 class InstalledAppListViewHolder(
-        private val delegate: PrimeDelegate
+        delegate: PrimeDelegate
 ) : PrimeViewHolder<InstalledAppListDataHolder>(delegate, R.layout.list_item_installed_app_list) {
 
     override fun bindDataToView(dataHolder: InstalledAppListDataHolder) {
@@ -38,6 +38,7 @@ class InstalledAppListViewHolder(
                 expansionImageButton.setOnClickListener { toggleExpansion() }
                 expansionImageButton.visibility = if (isExpandable()) View.VISIBLE else View.GONE
             }
+            setDragHandle(itemView)
         }
     }
 
