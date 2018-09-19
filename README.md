@@ -67,7 +67,7 @@ class ActorViewHolder(
 }
 ```
   
-3. Your custom adapter class must inherit from `PrimeAdapter` that decides to make view holder instance according to data holder type.
+3. Your custom adapter class must inherit from `PrimeAdapter` that decides to make view holder instance based on data holder type.
 Follow this pattern:
 
 ```kotlin
