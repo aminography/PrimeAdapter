@@ -9,9 +9,9 @@ internal interface IDragHelperCallback {
 
     fun onItemSwiped(position: Int, direction: Int)
 
-    fun isItemViewSwipeEnabled(): Boolean
+    fun isSwipeableToDismiss(): Boolean
 
-    fun isLongPressDragEnabled(): Boolean
+    fun isLongPressDraggable(): Boolean
 
-    fun isOnlySameViewTypeCanReplaceable(): Boolean
+    fun isOnlySameViewTypeReplaceable(): Boolean
 }

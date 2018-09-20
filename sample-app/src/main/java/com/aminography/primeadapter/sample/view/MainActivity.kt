@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
             when (view.id) {
                 R.id.expandableCheckBox -> fragment.expandable = isChecked
                 R.id.draggableCheckBox -> fragment.draggable = isChecked
+                R.id.longPressDraggableCheckBox -> fragment.longPressDraggable = isChecked
                 R.id.dividerCheckBox -> fragment.hasDivider = isChecked
             }
         }
@@ -36,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         val headerLayout = navigationView.getHeaderView(0)
         headerLayout.findViewById<AppCompatCheckBox>(R.id.expandableCheckBox).setOnCheckedChangeListener(onCheckedChangeListener)
         headerLayout.findViewById<AppCompatCheckBox>(R.id.draggableCheckBox).setOnCheckedChangeListener(onCheckedChangeListener)
+        headerLayout.findViewById<AppCompatCheckBox>(R.id.longPressDraggableCheckBox).setOnCheckedChangeListener(onCheckedChangeListener)
         headerLayout.findViewById<AppCompatCheckBox>(R.id.dividerCheckBox).setOnCheckedChangeListener(onCheckedChangeListener)
 
         headerLayout.findViewById<View>(R.id.restoreDefaultLayout).setOnClickListener {
@@ -43,10 +45,12 @@ class MainActivity : AppCompatActivity() {
             headerLayout.apply {
                 findViewById<AppCompatCheckBox>(R.id.expandableCheckBox).isChecked = false
                 findViewById<AppCompatCheckBox>(R.id.draggableCheckBox).isChecked = false
+                findViewById<AppCompatCheckBox>(R.id.longPressDraggableCheckBox).isChecked = false
                 findViewById<AppCompatCheckBox>(R.id.dividerCheckBox).isChecked = true
             }
             fragment.expandable = false
             fragment.draggable = false
+            fragment.longPressDraggable = false
             fragment.hasDivider = true
         }
     }

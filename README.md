@@ -26,9 +26,9 @@ repositories {
 }
   
 dependencies {
-    implementation 'com.aminography:primeadapter:1.0.4'
-    compileOnly 'com.aminography:primeadapter-annotation:1.0.4'
-    kapt 'com.aminography:primeadapter-processor:1.0.4'
+    implementation 'com.aminography:primeadapter:1.0.5'
+    compileOnly 'com.aminography:primeadapter-annotation:1.0.5'
+    kapt 'com.aminography:primeadapter-processor:1.0.5'
 }
 ```
 

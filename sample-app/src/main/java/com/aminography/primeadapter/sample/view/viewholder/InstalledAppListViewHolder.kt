@@ -29,6 +29,7 @@ class InstalledAppListViewHolder(
 
                 val stringBuilder = StringBuilder()
                 stringBuilder.apply {
+                    append("packageIdentifier: ${installedAppData.packageIdentifier}").append("\n")
                     append("versionCode: ${installedAppData.versionCode}").append("\n")
                     append("versionName: ${installedAppData.versionName}").append("\n")
                     if (installedAppData.minSdkVersion > 0) append("minSdkVersion: ${installedAppData.minSdkVersion}").append("\n")

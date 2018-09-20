@@ -94,6 +94,25 @@
             android:paddingRight="12dp">
 
             <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/longPressDraggableCheckBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="32dp"
+                android:text="Long Press Draggable"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp">
+
+            <android.support.v7.widget.AppCompatCheckBox
                 android:id="@+id/dividerCheckBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

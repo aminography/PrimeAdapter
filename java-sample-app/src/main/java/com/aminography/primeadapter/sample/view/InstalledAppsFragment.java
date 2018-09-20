@@ -63,8 +63,6 @@ public class InstalledAppsFragment extends Fragment implements OnRecyclerViewIte
                 .setLayoutManager(new LinearLayoutManager(getActivity()))
                 .setDivider(Color.parseColor("#BDBDBD"), 1, (int) UIUtils.dp2px(getActivity(), 72F), 0, 0, 0)
                 .setHasFixedSize(true)
-                .setDraggable(false)
-                .setExpandable(false)
                 .set()
                 .build(InstalledAppsListAdapter.class);
 
@@ -100,6 +98,10 @@ public class InstalledAppsFragment extends Fragment implements OnRecyclerViewIte
 
     public void setDraggable(boolean draggable) {
         adapter.setDraggable(draggable);
+    }
+
+    public void setLongPressDraggable(boolean longPressDraggable) {
+        adapter.setLongPressDraggable(longPressDraggable);
     }
 
     public void setHasDivider(boolean hasDivider) {

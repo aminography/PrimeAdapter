@@ -45,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.draggableCheckBox:
                             fragment.setDraggable(isChecked);
                             break;
+                        case R.id.longPressDraggableCheckBox:
+                            fragment.setLongPressDraggable(isChecked);
+                            break;
                         case R.id.dividerCheckBox:
                             fragment.setHasDivider(isChecked);
                             break;
@@ -58,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
         ((AppCompatCheckBox) headerLayout.findViewById(R.id.expandableCheckBox)).setOnCheckedChangeListener(onCheckedChangeListener);
         ((AppCompatCheckBox) headerLayout.findViewById(R.id.draggableCheckBox)).setOnCheckedChangeListener(onCheckedChangeListener);
+        ((AppCompatCheckBox) headerLayout.findViewById(R.id.longPressDraggableCheckBox)).setOnCheckedChangeListener(onCheckedChangeListener);
         ((AppCompatCheckBox) headerLayout.findViewById(R.id.dividerCheckBox)).setOnCheckedChangeListener(onCheckedChangeListener);
 
         headerLayout.findViewById(R.id.restoreDefaultLayout).setOnClickListener(new View.OnClickListener() {
@@ -72,11 +76,13 @@ public class MainActivity extends AppCompatActivity {
 
                 ((AppCompatCheckBox) headerLayout.findViewById(R.id.expandableCheckBox)).setChecked(false);
                 ((AppCompatCheckBox) headerLayout.findViewById(R.id.draggableCheckBox)).setChecked(false);
+                ((AppCompatCheckBox) headerLayout.findViewById(R.id.longPressDraggableCheckBox)).setChecked(false);
                 ((AppCompatCheckBox) headerLayout.findViewById(R.id.dividerCheckBox)).setChecked(true);
 
                 if (fragment != null) {
                     fragment.setExpandable(false);
                     fragment.setDraggable(false);
+                    fragment.setLongPressDraggable(false);
                     fragment.setHasDivider(true);
                 }
             }

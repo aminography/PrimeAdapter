@@ -49,6 +49,7 @@ public class InstalledAppListViewHolder extends PrimeViewHolder<InstalledAppList
         appSizeTextView.setText(TextUtils.formatFileSize(installedAppData.getAppSize()));
 
         StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(String.format(Locale.getDefault(), "packageIdentifier: %s", installedAppData.getPackageIdentifier())).append("\n");
         stringBuilder.append(String.format(Locale.getDefault(), "versionCode: %d", installedAppData.getVersionCode())).append("\n");
         stringBuilder.append(String.format(Locale.getDefault(), "versionName: %s", installedAppData.getVersionName())).append("\n");
         if (installedAppData.getMinSdkVersion() > 0) {

@@ -40,9 +40,9 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
     protected var recycledViewPool: RecyclerView.RecycledViewPool? = null
     private var isDraggable: Boolean = false
     private var isExpandable: Boolean = false
-    private var isSwipeToDismissEnabled: Boolean = false
-    private var isLongPressDragEnabled: Boolean = false
-    private var isOnlySameViewTypeCanReplaceable: Boolean = true
+    private var isSwipeableToDismiss: Boolean = false
+    private var isLongPressDraggable: Boolean = false
+    private var isOnlySameViewTypeReplaceable: Boolean = true
 
     override fun onBindViewHolder(viewHolder: PrimeViewHolder<PrimeDataHolder>, position: Int) {
         val dataHolder = dataList[position]
@@ -81,29 +81,29 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
         if (isDraggable) initItemTouchHelper()
     }
 
-    fun setIsSwipeToDismissEnabled(isSwipeToDismissEnabled: Boolean) {
-        this.isSwipeToDismissEnabled = isSwipeToDismissEnabled
-        if (isSwipeToDismissEnabled) initItemTouchHelper()
+    fun setSwipeableToDismiss(isSwipeableToDismiss: Boolean) {
+        this.isSwipeableToDismiss = isSwipeableToDismiss
+        if (isSwipeableToDismiss) initItemTouchHelper()
     }
 
-    fun setIsLongPressDragEnabled(isLongPressDragEnabled: Boolean) {
-        this.isLongPressDragEnabled = isLongPressDragEnabled
-        if (isLongPressDragEnabled) initItemTouchHelper()
+    fun setLongPressDraggable(isLongPressDraggable: Boolean) {
+        this.isLongPressDraggable = isLongPressDraggable
+        if (isLongPressDraggable) initItemTouchHelper()
     }
 
-    fun setIsOnlySameViewTypeCanReplaceable(isOnlySameViewTypeCanReplaceable: Boolean) {
-        this.isOnlySameViewTypeCanReplaceable = isOnlySameViewTypeCanReplaceable
+    fun setOnlySameViewTypeReplaceable(isOnlySameViewTypeReplaceable: Boolean) {
+        this.isOnlySameViewTypeReplaceable = isOnlySameViewTypeReplaceable
     }
 
     private fun initItemTouchHelper() {
         if (itemTouchHelper == null) {
             val itemTouchHelperCallback = object : IDragHelperCallback {
 
-                override fun isOnlySameViewTypeCanReplaceable(): Boolean = isOnlySameViewTypeCanReplaceable
+                override fun isOnlySameViewTypeReplaceable(): Boolean = isOnlySameViewTypeReplaceable
 
-                override fun isLongPressDragEnabled(): Boolean = isLongPressDragEnabled
+                override fun isLongPressDraggable(): Boolean = isLongPressDraggable
 
-                override fun isItemViewSwipeEnabled(): Boolean = isSwipeToDismissEnabled
+                override fun isSwipeableToDismiss(): Boolean = isSwipeableToDismiss
 
                 override fun onItemMoved(fromPosition: Int, toPosition: Int): Boolean {
                     dataList.add(toPosition, dataList.removeAt(fromPosition))
@@ -237,9 +237,9 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
         private var isNestedScrollingEnabled: Boolean? = null
         private var isDraggable: Boolean? = null
         private var isExpandable: Boolean? = null
-        private var isSwipeToDismissEnabled: Boolean? = null
-        private var isLongPressDragEnabled: Boolean? = null
-        private var isOnlySameViewTypeCanReplaceable: Boolean? = null
+        private var isSwipeableToDismiss: Boolean? = null
+        private var isLongPressDragable: Boolean? = null
+        private var isOnlySameViewTypeReplaceable: Boolean? = null
         private var set: Boolean = false
 
         fun set(): AdapterBuilder {
@@ -262,22 +262,22 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
             return this
         }
 
-        fun setIsSwipeToDismissEnabled(isSwipeToDismissEnabled: Boolean): AdapterBuilder {
-            this.isSwipeToDismissEnabled = isSwipeToDismissEnabled
+        fun setSwipeableToDismiss(isSwipeableToDismiss: Boolean): AdapterBuilder {
+            this.isSwipeableToDismiss = isSwipeableToDismiss
             return this
         }
 
-        fun setIsLongPressDragEnabled(isLongPressDragEnabled: Boolean): AdapterBuilder {
-            this.isLongPressDragEnabled = isLongPressDragEnabled
+        fun setLongPressDragable(isLongPressDragable: Boolean): AdapterBuilder {
+            this.isLongPressDragable = isLongPressDragable
             return this
         }
 
-        fun setIsOnlySameViewTypeCanReplaceable(isOnlySameViewTypeCanReplaceable: Boolean): AdapterBuilder {
-            this.isOnlySameViewTypeCanReplaceable = isOnlySameViewTypeCanReplaceable
+        fun setOnlySameViewTypeReplaceable(isOnlySameViewTypeReplaceable: Boolean): AdapterBuilder {
+            this.isOnlySameViewTypeReplaceable = isOnlySameViewTypeReplaceable
             return this
         }
 
-        fun setIsNestedScrollingEnabled(isNestedScrollingEnabled: Boolean): AdapterBuilder {
+        fun setNestedScrollingEnabled(isNestedScrollingEnabled: Boolean): AdapterBuilder {
             this.isNestedScrollingEnabled = isNestedScrollingEnabled
             return this
         }
@@ -358,14 +358,14 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
             isExpandable?.let {
                 t.setExpandable(it)
             }
-            isSwipeToDismissEnabled?.let {
-                t.setIsSwipeToDismissEnabled(it)
+            isSwipeableToDismiss?.let {
+                t.setSwipeableToDismiss(it)
             }
-            isLongPressDragEnabled?.let {
-                t.setIsLongPressDragEnabled(it)
+            isLongPressDragable?.let {
+                t.setLongPressDraggable(it)
             }
-            isOnlySameViewTypeCanReplaceable?.let {
-                t.setIsOnlySameViewTypeCanReplaceable(it)
+            isOnlySameViewTypeReplaceable?.let {
+                t.setOnlySameViewTypeReplaceable(it)
             }
             dividerDrawable.let {
                 t.setDivider(it, dividerDrawableInsetLeft, dividerDrawableInsetTop, dividerDrawableInsetRight, dividerDrawableInsetBottom)

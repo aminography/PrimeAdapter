@@ -43,6 +43,12 @@ class InstalledAppsFragment : Fragment(), OnRecyclerViewItemClickListener, OnRec
             adapter?.setDraggable(value)
         }
 
+    var longPressDraggable: Boolean = false
+        set(value) {
+            field = value
+            adapter?.setLongPressDraggable(value)
+        }
+
     var hasDivider: Boolean = true
         set(value) {
             field = value
@@ -69,8 +75,6 @@ class InstalledAppsFragment : Fragment(), OnRecyclerViewItemClickListener, OnRec
                 .setLayoutManager(LinearLayoutManager(activity))
                 .setDivider(insetLeft = UIUtils.dp2px(activity!!, 72F).toInt())
                 .setHasFixedSize(true)
-                .setDraggable(false)
-                .setExpandable(false)
                 .set()
                 .build(InstalledAppsListAdapter::class.java)
 

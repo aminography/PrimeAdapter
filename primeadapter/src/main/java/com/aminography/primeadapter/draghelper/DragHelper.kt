@@ -11,11 +11,11 @@ import android.support.v7.widget.helper.ItemTouchHelper
 internal class DragHelper(private val callback: IDragHelperCallback) : ItemTouchHelper.Callback() {
 
     override fun isLongPressDragEnabled(): Boolean {
-        return callback.isLongPressDragEnabled()
+        return callback.isLongPressDraggable()
     }
 
     override fun isItemViewSwipeEnabled(): Boolean {
-        return callback.isItemViewSwipeEnabled()
+        return callback.isSwipeableToDismiss()
     }
 
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
@@ -32,7 +32,7 @@ internal class DragHelper(private val callback: IDragHelperCallback) : ItemTouch
     }
 
     override fun onMove(recyclerView: RecyclerView, source: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-        return if (callback.isOnlySameViewTypeCanReplaceable() && source.itemViewType != target.itemViewType) {
+        return if (callback.isOnlySameViewTypeReplaceable() && source.itemViewType != target.itemViewType) {
             false
         } else {
             callback.onItemMoved(source.adapterPosition, target.adapterPosition)
