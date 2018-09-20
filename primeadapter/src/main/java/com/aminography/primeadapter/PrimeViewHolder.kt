@@ -15,9 +15,9 @@ import com.aminography.primeadapter.tools.consume
  * Created by aminography on 6/6/2018.
  */
 abstract class PrimeViewHolder<T : PrimeDataHolder>(
-        private val adapterDelegate: PrimeDelegate,
+        private val delegate: PrimeDelegate,
         @LayoutRes layoutResourceID: Int
-) : RecyclerView.ViewHolder(adapterDelegate.getInflater().inflate(layoutResourceID, adapterDelegate.getParentView(), false)), ItemTouchHelperViewHolder {
+) : RecyclerView.ViewHolder(delegate.getInflater().inflate(layoutResourceID, delegate.getParentView(), false)), ItemTouchHelperViewHolder {
 
     var dataHolder: T? = null
         set(holder) {
@@ -33,7 +33,7 @@ abstract class PrimeViewHolder<T : PrimeDataHolder>(
         }
 
     init {
-        adapterDelegate.getOnItemClickListener()?.let { listener ->
+        delegate.getOnItemClickListener()?.let { listener ->
             itemView.apply {
                 setOnClickListener { _ ->
                     dataHolder?.let {
@@ -55,12 +55,12 @@ abstract class PrimeViewHolder<T : PrimeDataHolder>(
 
     protected fun setDragHandle(view: View) {
         view.setOnTouchListener { _, event ->
-            if (adapterDelegate.isDraggable()) {
+            if (delegate.isDraggable()) {
                 @Suppress("DEPRECATION")
                 when (MotionEventCompat.getActionMasked(event)) {
-                    MotionEvent.ACTION_DOWN -> adapterDelegate.onStartDrag(this)
+                    MotionEvent.ACTION_DOWN -> delegate.onStartDrag(this)
                     MotionEvent.ACTION_UP -> {
-                        adapterDelegate.ontDragReleased(this)
+                        delegate.ontDragReleased(this)
                     }
                 }
             }
@@ -70,13 +70,13 @@ abstract class PrimeViewHolder<T : PrimeDataHolder>(
 
     protected fun toggleExpansion() {
         dataHolder?.apply {
-            adapterDelegate.toggleExpansion(this)
+            delegate.toggleExpansion(this)
         }
     }
 
-    protected fun isDraggable(): Boolean = adapterDelegate.isDraggable()
+    protected fun isDraggable(): Boolean = delegate.isDraggable()
 
-    protected fun isExpandable(): Boolean = adapterDelegate.isExpandable()
+    protected fun isExpandable(): Boolean = delegate.isExpandable()
 
     override fun onItemDragged() {
         itemView.setBackgroundColor(Color.parseColor("#DFDFDF"))
