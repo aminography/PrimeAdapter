@@ -21,7 +21,6 @@ import com.aminography.primeadapter.draghelper.IDragHelperCallback
 import com.aminography.primeadapter.draghelper.OnRecyclerViewItemDragListener
 import com.aminography.primeadapter.exception.ViewHolderNotFoundException
 import com.aminography.primeadapter.tools.PrimeAdapterUtils
-import java.util.*
 
 
 /**
@@ -31,7 +30,7 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
 
     protected lateinit var context: Context
     protected lateinit var layoutInflater: LayoutInflater
-    private var dataList: MutableList<PrimeDataHolder> = ArrayList()
+    private var dataList = mutableListOf<PrimeDataHolder>()
     private var itemClickListener: OnRecyclerViewItemClickListener? = null
     private var itemDragListener: OnRecyclerViewItemDragListener? = null
     private var itemTouchHelper: ItemTouchHelper? = null
@@ -238,7 +237,7 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
         private var isDraggable: Boolean? = null
         private var isExpandable: Boolean? = null
         private var isSwipeableToDismiss: Boolean? = null
-        private var isLongPressDragable: Boolean? = null
+        private var isLongPressDraggable: Boolean? = null
         private var isOnlySameViewTypeReplaceable: Boolean? = null
         private var set: Boolean = false
 
@@ -267,8 +266,8 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
             return this
         }
 
-        fun setLongPressDragable(isLongPressDragable: Boolean): AdapterBuilder {
-            this.isLongPressDragable = isLongPressDragable
+        fun setLongPressDraggable(isLongPressDraggable: Boolean): AdapterBuilder {
+            this.isLongPressDraggable = isLongPressDraggable
             return this
         }
 
@@ -361,7 +360,7 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
             isSwipeableToDismiss?.let {
                 t.setSwipeableToDismiss(it)
             }
-            isLongPressDragable?.let {
+            isLongPressDraggable?.let {
                 t.setLongPressDraggable(it)
             }
             isOnlySameViewTypeReplaceable?.let {
