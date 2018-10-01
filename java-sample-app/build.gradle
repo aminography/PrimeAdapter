@@ -41,10 +41,6 @@ dependencies {
     compileOnly project(':primeadapter-annotation')
     kapt project(':primeadapter-processor')
 
-//    implementation 'com.aminography:primeadapter:0.1.6'
-//    compileOnly 'com.aminography:primeadapter-annotation:0.1.6'
-//    kapt 'com.aminography:primeadapter-processor:0.1.6'
-
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
