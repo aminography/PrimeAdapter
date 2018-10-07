@@ -1,6 +1,6 @@
 # PrimeAdapter :zap:
-[![Android Arsenal]( https://img.shields.io/badge/Android%20Arsenal-PrimeAdapter-ffaa00.svg?style=flat )]( https://android-arsenal.com/details/1/7178)
-[![API](https://img.shields.io/badge/API-11%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=11)
+[![Android Arsenal]( https://img.shields.io/badge/Android%20Arsenal-PrimeAdapter-brightgreen.svg?style=flat )]( https://android-arsenal.com/details/1/7178)
+[![API](https://img.shields.io/badge/API-11%2B-ffaa00.svg?style=flat)](https://android-arsenal.com/api?level=11)
 [![Download](https://api.bintray.com/packages/aminography/maven/PrimeAdapter/images/download.svg) ](https://bintray.com/aminography/maven/PrimeAdapter/_latestVersion)
   
 **PrimeAdapter** makes working with `RecyclerView` easier by separating required code in some simple clean classes.
