@@ -90,6 +90,9 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
         if (isLongPressDraggable) initItemTouchHelper()
     }
 
+    /**
+     * @param isOnlySameViewTypeReplaceable
+     */
     fun setOnlySameViewTypeReplaceable(isOnlySameViewTypeReplaceable: Boolean) {
         this.isOnlySameViewTypeReplaceable = isOnlySameViewTypeReplaceable
     }
@@ -127,6 +130,10 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
         }
     }
 
+    /**
+     * @param dataHolder
+     * @return isExpandable
+     */
     override fun toggleExpansion(dataHolder: PrimeDataHolder): Boolean {
         if (isExpandable) {
             dataHolder.expanded = !dataHolder.expanded
@@ -329,7 +336,7 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
         }
 
         fun <T : PrimeAdapter> build(adapterClass: Class<T>): T {
-            val t = adapterClass.newInstance()
+            val t = adapterClass.getDeclaredConstructor().newInstance()
             t.recyclerView = recyclerView
             t.context = recyclerView.context
             t.layoutInflater = LayoutInflater.from(recyclerView.context)
