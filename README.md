@@ -108,22 +108,26 @@ Extra Features
 ### Handling Item Clicks
 **PrimeAdapter** helps you handle `RecyclerView` items click events,
 simply by `setItemClickListener()` with an `OnRecyclerViewItemClickListener` argument when you're building an adapter instance or later:
+
 ```kotlin
-val adapter = PrimeAdapter.with(recyclerView)
-                ...
-                .setItemClickListener(onRecyclerViewItemClickListener)
-                ...
-                .build(ActorAdapter::class.java)
-                
-...
-adapter.setItemClickListener(object: OnRecyclerViewItemClickListener{
+val onRecyclerViewItemClickListener = object: OnRecyclerViewItemClickListener{
     override fun onItemClick(primeDataHolder: PrimeDataHolder) {
         // do something
     }
     override fun onItemLongClick(primeDataHolder: PrimeDataHolder) {
         // do something
     }
-})
+}
+
+// In builder pattern:
+val adapter = PrimeAdapter.with(recyclerView)
+                ...
+                .setItemClickListener(onRecyclerViewItemClickListener)
+                ...
+                .build(ActorAdapter::class.java)
+                
+// or after adapter instantiation:
+adapter.setItemClickListener(onRecyclerViewItemClickListener)
 ```
 
 ### Draggability
