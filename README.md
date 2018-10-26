@@ -5,6 +5,7 @@
   
 **PrimeAdapter** makes working with `RecyclerView` easier by separating required code in some simple clean classes.
 It brings simplicity when you have multiple view types in a `RecyclerView`.
+By using annotation processing, it generates unique view types automatically to make the code simpler.
 You can use **PrimeAdapter** in both [Kotlin](https://github.com/aminography/PrimeAdapter/tree/master/sample-app) and [Java](https://github.com/aminography/PrimeAdapter/tree/master/java-sample-app) Android projects as the sample apps are written.
   
 ![](static/prime_logo.png)
