@@ -200,7 +200,7 @@ adapter.notifyDataSetChanged()
 
 ProGuard
 --------
-If you want to create a release version of your app, you need to include the following lines in your app level proguard file: 
+If you want to create a release version of your app, you need to include the following lines in the app level proguard file: 
 ```pro
 -keep class com.aminography.primeadapter.ViewTypeManager { *; }
 -keepclassmembers class ** {
