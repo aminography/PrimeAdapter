@@ -56,7 +56,7 @@ class InstalledAppsViewModel : ViewModel() {
                                 val targetSdkVersion = applicationInfo.targetSdkVersion
                                 @Suppress("DEPRECATION")
                                 val versionCode = packageInfo.versionCode.toLong() /*longVersionCode*/
-                                val versionName = packageInfo.versionName
+                                val versionName = packageInfo.versionName ?: ""
 
                                 list.add(InstalledAppData(packageName, appTitle, drawable, size, minSdkVersion, targetSdkVersion, versionCode, versionName, intent))
                             }
