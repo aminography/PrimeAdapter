@@ -76,7 +76,7 @@ class ActorAdapter : PrimeAdapter() {
   
     override fun makeViewHolder(dataHolderClass: Class<*>?): PrimeViewHolder<*>? {
         return when (dataHolderClass) {
-            ActorDataHolder::class.java -> ActorViewHolder(this)
+            ActorDataHolder::class -> ActorViewHolder(this)
             else -> null
         }
     }

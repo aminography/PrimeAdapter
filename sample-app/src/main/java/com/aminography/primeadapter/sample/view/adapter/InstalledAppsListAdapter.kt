@@ -14,8 +14,8 @@ class InstalledAppsListAdapter : PrimeAdapter() {
 
     override fun makeViewHolder(dataHolderClass: Class<*>?): PrimeViewHolder<*>? {
         return when (dataHolderClass) {
-            InstalledAppListDataHolder::class.java -> InstalledAppListViewHolder(this)
-            TitleInstalledAppListDataHolder::class.java -> TitleInstalledAppListViewHolder(this)
+            InstalledAppListDataHolder::class -> InstalledAppListViewHolder(this)
+            TitleInstalledAppListDataHolder::class -> TitleInstalledAppListViewHolder(this)
             else -> null
         }
     }
