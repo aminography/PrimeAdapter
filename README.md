@@ -3,10 +3,10 @@
 [![API](https://img.shields.io/badge/API-11%2B-ffaa00.svg?style=flat)](https://android-arsenal.com/api?level=11)
 [![Download](https://api.bintray.com/packages/aminography/maven/PrimeAdapter/images/download.svg) ](https://bintray.com/aminography/maven/PrimeAdapter/_latestVersion)
   
-`**PrimeAdapter**` makes working with `RecyclerView` easier by separating required code in some simple clean classes.
+**`PrimeAdapter`** makes working with `RecyclerView` easier by separating required code in some simple clean classes.
 It brings simplicity when you have multiple view types in a `RecyclerView`.
 By using annotation processing, it generates unique view types automatically to make the code more clear.
-You can use `**PrimeAdapter**` in both [Kotlin](https://github.com/aminography/PrimeAdapter/tree/master/sample-app) and [Java](https://github.com/aminography/PrimeAdapter/tree/master/java-sample-app) Android projects as the sample apps are written.
+You can use **`PrimeAdapter`** in both [Kotlin](https://github.com/aminography/PrimeAdapter/tree/master/sample-app) and [Java](https://github.com/aminography/PrimeAdapter/tree/master/java-sample-app) Android projects as the sample apps are written.
   
 ![](static/prime_logo.png)
   
@@ -68,7 +68,7 @@ class ActorViewHolder(
 }
 ```
   
-3. Your custom adapter class must inherit from `**PrimeAdapter**` that decides to make view holder instance based on data holder type.
+3. Your custom adapter class must inherit from **`PrimeAdapter`** that decides to make view holder instance based on data holder type.
 Follow this pattern:
 
 ```kotlin
@@ -83,7 +83,7 @@ class ActorAdapter : PrimeAdapter() {
 }
 ```
 
-4. Finally, you can instantiate your custom adapter using `**PrimeAdapter**` builder mechanism.
+4. Finally, you can instantiate your custom adapter using **`PrimeAdapter`** builder mechanism.
 
 ```kotlin
 override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,7 +107,7 @@ Extra Features
 --------
 
 ### Handling Item Clicks
-`**PrimeAdapter**` helps you handle `RecyclerView` items click events,
+**`PrimeAdapter`** helps you handle `RecyclerView` items click events,
 simply by `setItemClickListener()` with an `OnRecyclerViewItemClickListener` argument when you're building an adapter instance or later:
 
 ```kotlin
@@ -132,7 +132,7 @@ adapter.setItemClickListener(onRecyclerViewItemClickListener)
 ```
 
 ### Draggability
-`**PrimeAdapter**` helps you make the `RecyclerView` items draggable.
+**`PrimeAdapter`** helps you make the `RecyclerView` items draggable.
 It would be activated/deactivated by calling `setDraggable(true)`/`setDraggable(false)` on a builder or an adapter instance.
 Optionally, you can get notified about item movements by calling `setItemDragListener()` and passing an `OnRecyclerViewItemDragListener` instance to it.
 
@@ -159,7 +159,7 @@ class ActorViewHolder(
 ```
 
 ### Expandability
-Another feature of `**PrimeAdapter**` is making the implementation of `RecyclerView` items expansion easier.
+Another feature of **`PrimeAdapter`** is making the implementation of `RecyclerView` items expansion easier.
 Calling the `setExpandable(true)`/`setExpandable(false)` on a builder or on adapter instance changes its activation.
 
 ```kotlin
@@ -169,7 +169,7 @@ adapter.setExpandable(true)
 To see how to implement it, please check the [related example code][2].
 
 ### Custom Skippable Divider
-Showing custom divider lines is a good feature that `**PrimeAdapter**` provides.
+Showing custom divider lines is a good feature that **`PrimeAdapter`** provides.
 Calling the `setDivider()` on a builder or on adapter instance leads to show default divider line between items.
 It's possible to pass it a custom `Drawable` instance or simply a color to change the divider looking.
 Also we can set inset for divider drawables in pixels.
