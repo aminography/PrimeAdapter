@@ -392,6 +392,7 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
             }
         }
 
+        @JvmStatic
         fun with(recyclerView: RecyclerView): AdapterBuilder {
             init()
             return AdapterBuilder(recyclerView)

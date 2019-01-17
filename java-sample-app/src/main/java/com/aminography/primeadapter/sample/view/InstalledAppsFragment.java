@@ -57,11 +57,11 @@ public class InstalledAppsFragment extends Fragment implements OnRecyclerViewIte
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progressBar);
 
-        adapter = PrimeAdapter.Companion.with(recyclerView)
+        adapter = PrimeAdapter.with(recyclerView)
                 .setItemClickListener(this)
                 .setItemDragListener(this)
                 .setLayoutManager(new LinearLayoutManager(getActivity()))
-                .setDivider(Color.parseColor("#BDBDBD"), 1, (int) UIUtils.dp2px(getActivity(), 72F), 0, 0, 0)
+                .setDivider(Color.parseColor("#BDBDBD"), 1, (int) UIUtils.dp2px(getActivity(), 72f), 0, 0, 0)
                 .setHasFixedSize(true)
                 .set()
                 .build(InstalledAppsListAdapter.class);

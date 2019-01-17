@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.2.70'
+    ext.kotlin_version = '1.3.11'
 
     repositories {
         google()
@@ -10,14 +10,14 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0'
+        classpath 'com.android.tools.build:gradle:3.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
 
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
     }
 }
 
@@ -31,4 +31,28 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'PrimeAdapter'
+    orgName = 'aminography'
+
+    publishedGroupId = 'com.aminography'
+    artifact = 'primeadapter-processor'
+    libraryVersion = "1.0.7"
+
+    libraryName = 'PrimeAdapter'
+    libraryDescription = 'PrimeAdapter makes working with RecyclerView easier.'
+
+    siteUrl = 'https://github.com/aminography/PrimeAdapter'
+    gitUrl = 'https://github.com/aminography/PrimeAdapter.git'
+
+    developerId = 'aminography'
+    developerName = 'Mohammad Amin Hassani'
+    developerEmail = 'aminography@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
 }
