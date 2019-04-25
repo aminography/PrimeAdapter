@@ -6,9 +6,7 @@ import android.app.Activity
 import android.graphics.Rect
 import android.support.v7.widget.RecyclerView
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.MotionEvent
-import android.view.VelocityTracker
 import android.view.View
 import android.view.ViewConfiguration
 import android.view.animation.DecelerateInterpolator
@@ -16,74 +14,58 @@ import android.widget.ListView
 import java.util.*
 import kotlin.collections.ArrayList
 
-class RecyclerTouchListener(private val act: Activity, // Fixed properties
-                            private val mRecyclerView: RecyclerView?) : RecyclerView.OnItemTouchListener {
+class RecyclerTouchListener(
+        private val activity: Activity,
+        private val recyclerView: RecyclerView
+) : RecyclerView.OnItemTouchListener {
+
     private var unSwipeableRows: ArrayList<Int>? = null
-    /*
-     * independentViews are views on the foreground layer which when clicked, act "independent" from the foreground
-     * ie, they are treated separately from the "row click" action
-     */
     private var optionViews: ArrayList<Int>? = null
     private val ignoredViewTypes: Set<Int>
-    // Cached ViewConfiguration and system-wide constant values
-    private val touchSlop: Int
-    private val minFlingVel: Int
-    private val maxFlingVel: Int
-    private val ANIMATION_STANDARD: Long = 300
-    private val ANIMATION_CLOSE: Long = 150
-    // private SwipeListener mSwipeListener;
-    private var bgWidth = 1 // 1 and not 0 to prevent dividing by zero
-    private var bgWidth2 = 1 // 1 and not 0 to prevent dividing by zero
-    // Transient properties
-    // private List<PendingDismissData> mPendingDismisses = new ArrayList<>();
-    private var touchedX: Float = 0.toFloat()
-    private var touchedY: Float = 0.toFloat()
-    private var isFgSwiping: Boolean = false
-    private var mSwipingSlop: Int = 0
-    private var mVelocityTracker: VelocityTracker? = null
+
+    private val touchSlop: Int = ViewConfiguration.get(recyclerView.context).scaledTouchSlop
+    private var touchedX: Float = 0f
+    private var touchedY: Float = 0f
+    private var defaultSwipingSlop: Int = 0
     private var touchedPosition: Int = 0
     private var touchedView: View? = null
-    private var mPaused: Boolean = false
-    private var bgVisible: Boolean = false
-    private var fgPartialViewClicked: Boolean = false
-    private var bgVisiblePosition: Int = 0
-    private var bgVisibleView: View? = null
-    private var heightOutsideRView: Int = 0
-    private var screenHeight: Int = 0
-    // Foreground view (to be swiped), Background view (to show)
-    private var fgView: View? = null
-    private var bgView: View? = null
-    private var bgView2: View? = null
-    //view ID
-    private var fgViewID: Int = 0
-    private var bgViewID: Int = 0
-    private var bgViewID2: Int = 0
-    private var mBgClickListener: OnSwipeOptionsClickListener? = null
-    // user choices
-    private var swipeable = false
 
-    private var isLeft = false
+    private var swipeable = false
+    private var inSwiping: Boolean = false
+    private var paused: Boolean = false
+
+    private var foregroundPartialViewClicked: Boolean = false
+    private var backgroundVisible: Boolean = false
+    private var backgroundVisiblePosition: Int = 0
+    private var backgroundVisibleView: View? = null
+    private var heightOutsideRecyclerView: Int = 0
+    private var screenHeight: Int = 0
+    private var direction: Direction = Direction.RIGHT
+    private var onSwipeOptionsClickListener: OnSwipeOptionsClickListener? = null
+
+    private var foregroundView: View? = null
+    private var rightBackgroundView: View? = null
+    private var leftBackgroundView: View? = null
+
+    private var foregroundViewId: Int = 0
+    private var rightBackgroundViewId: Int = 0
+    private var leftBackgroundViewId: Int = 0
+
+    private var rightBackgroundViewWidth = 1 // 1 and not 0 to prevent dividing by zero
+    private var leftBackgroundViewWidth = 1 // 1 and not 0 to prevent dividing by zero
 
     init {
-        val vc = ViewConfiguration.get(mRecyclerView?.context)
-        touchSlop = vc.scaledTouchSlop
-        minFlingVel = vc.scaledMinimumFlingVelocity * 16
-        maxFlingVel = vc.scaledMaximumFlingVelocity
-        bgVisible = false
-        bgVisiblePosition = -1
-        bgVisibleView = null
-        fgPartialViewClicked = false
+        backgroundVisible = false
+        backgroundVisiblePosition = -1
+        backgroundVisibleView = null
+        foregroundPartialViewClicked = false
+
         unSwipeableRows = ArrayList()
         ignoredViewTypes = HashSet()
         optionViews = ArrayList()
 
-        mRecyclerView!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                /**
-                 * This will ensure that this RecyclerTouchListener is paused during recycler view scrolling.
-                 * If a scroll listener is already assigned, the caller should still pass scroll changes through
-                 * to this listener.
-                 */
                 setEnabled(newState != RecyclerView.SCROLL_STATE_DRAGGING)
             }
 
@@ -97,31 +79,31 @@ class RecyclerTouchListener(private val act: Activity, // Fixed properties
      * @param enabled Whether or not to watch for gestures.
      */
     fun setEnabled(enabled: Boolean) {
-        mPaused = !enabled
+        paused = !enabled
     }
 
-    override fun onInterceptTouchEvent(rv: RecyclerView, motionEvent: MotionEvent): Boolean {
+    override fun onInterceptTouchEvent(recyclerView: RecyclerView, motionEvent: MotionEvent): Boolean {
         return handleTouchEvent(motionEvent)
     }
 
-    override fun onTouchEvent(rv: RecyclerView, motionEvent: MotionEvent) {
+    override fun onTouchEvent(recyclerView: RecyclerView, motionEvent: MotionEvent) {
         handleTouchEvent(motionEvent)
     }
 
     //////////////// Swipeable ////////////////////
 
-    fun setSwipeable(foregroundID: Int, backgroundID: Int, backgroundID2: Int, listener: OnSwipeOptionsClickListener): RecyclerTouchListener {
-        this.swipeable = true
-        if (fgViewID != 0 && foregroundID != fgViewID) {
-            throw IllegalArgumentException("foregroundID does not match previously set ID")
+    fun setSwipeable(foregroundViewId: Int, rightBackgroundViewId: Int, leftBackgroundViewId: Int, onSwipeOptionsClickListener: OnSwipeOptionsClickListener): RecyclerTouchListener {
+        swipeable = true
+        if (this.foregroundViewId != 0 && foregroundViewId != this.foregroundViewId) {
+            throw IllegalArgumentException("foregroundViewId does not match previously set ID")
         }
-        fgViewID = foregroundID
-        bgViewID = backgroundID
-        bgViewID2 = backgroundID2
-        this.mBgClickListener = listener
+        this.foregroundViewId = foregroundViewId
+        this.rightBackgroundViewId = rightBackgroundViewId
+        this.leftBackgroundViewId = leftBackgroundViewId
+        this.onSwipeOptionsClickListener = onSwipeOptionsClickListener
 
         val displayMetrics = DisplayMetrics()
-        act.windowManager.defaultDisplay.getMetrics(displayMetrics)
+        activity.windowManager.defaultDisplay.getMetrics(displayMetrics)
         screenHeight = displayMetrics.heightPixels
 
         return this
@@ -141,7 +123,7 @@ class RecyclerTouchListener(private val act: Activity, // Fixed properties
 
     //-------------- Checkers for preventing ---------------//
 
-    private fun getOptionViewID(motionEvent: MotionEvent): Int {
+    private fun getOptionViewId(motionEvent: MotionEvent): Int {
         for (i in optionViews!!.indices) {
             if (touchedView != null) {
                 val rect = Rect()
@@ -159,87 +141,73 @@ class RecyclerTouchListener(private val act: Activity, // Fixed properties
     override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
 
     @Deprecated("")
-    fun closeVisibleBG() {
-        if (bgVisibleView == null) {
-            Log.e(TAG, "No rows found for which background options are visible")
+    fun closeVisibleBackground() {
+        if (backgroundVisibleView == null) {
             return
         }
-        bgVisibleView!!.animate()
-                .translationX(0f)
-                .setDuration(ANIMATION_CLOSE)
-                .setListener(null)
+        backgroundVisibleView?.animate()?.apply {
+            duration = ANIMATION_CLOSE
+            translationX(0f)
+            setListener(null)
+        }
 
-        bgVisible = false
-        bgVisibleView = null
-        bgVisiblePosition = -1
+        backgroundVisible = false
+        backgroundVisibleView = null
+        backgroundVisiblePosition = -1
     }
 
-    private fun closeVisibleBG(mSwipeCloseListener: OnSwipeListener?) {
-        if (bgVisibleView == null) {
-            Log.e(TAG, "No rows found for which background options are visible")
+    private fun closeVisibleBackground(listener: OnSwipeListener?) {
+        if (backgroundVisibleView == null) {
             return
         }
-        val translateAnimator = ObjectAnimator.ofFloat(bgVisibleView, View.TRANSLATION_X, 0f)
-        translateAnimator.duration = ANIMATION_CLOSE
-        translateAnimator.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationStart(animation: Animator) {}
 
-            override fun onAnimationEnd(animation: Animator) {
-                mSwipeCloseListener?.onSwipeOptionsClosed()
-                translateAnimator.removeAllListeners()
+        ObjectAnimator.ofFloat(backgroundVisibleView, View.TRANSLATION_X, 0f).apply {
+            duration = ANIMATION_CLOSE
+            addListener(object : Animator.AnimatorListener {
+                override fun onAnimationStart(animation: Animator) {}
+                override fun onAnimationCancel(animation: Animator) {}
+                override fun onAnimationRepeat(animation: Animator) {}
+
+                override fun onAnimationEnd(animation: Animator) {
+                    listener?.onSwipeOptionsClosed()
+                    removeAllListeners()
+                }
+            })
+            start()
+        }
+
+        backgroundVisible = false
+        backgroundVisibleView = null
+        backgroundVisiblePosition = -1
+    }
+
+    private fun animateForeground(animateType: Animation, duration: Long, listener: OnSwipeListener? = null) {
+        var translateAnimator: ObjectAnimator? = null
+        when (animateType) {
+            Animation.OPEN -> {
+                val distance = if (direction == Direction.LEFT) leftBackgroundViewWidth else -rightBackgroundViewWidth
+                translateAnimator = ObjectAnimator.ofFloat(foregroundView, View.TRANSLATION_X, distance.toFloat())
+                translateAnimator.duration = duration
+                translateAnimator.interpolator = DecelerateInterpolator(1.5f)
+                translateAnimator.start()
             }
-
-            override fun onAnimationCancel(animation: Animator) {}
-
-            override fun onAnimationRepeat(animation: Animator) {}
-        })
-        translateAnimator.start()
-
-        bgVisible = false
-        bgVisibleView = null
-        bgVisiblePosition = -1
-    }
-
-    private fun animateFG(downView: View?, animateType: Animation, duration: Long) {
-        //        boolean isLeft = false;
-        if (animateType == Animation.OPEN) {
-            val translateAnimator = ObjectAnimator.ofFloat<View>(fgView, View.TRANSLATION_X, (if (isLeft) bgWidth2 else -bgWidth).toFloat())
-            translateAnimator.duration = duration
-            translateAnimator.interpolator = DecelerateInterpolator(1.5f)
-            translateAnimator.start()
-        } else if (animateType == Animation.CLOSE) {
-            val translateAnimator = ObjectAnimator.ofFloat(fgView, View.TRANSLATION_X, 0f)
-            translateAnimator.duration = duration
-            translateAnimator.interpolator = DecelerateInterpolator(1.5f)
-            translateAnimator.start()
-        }
-    }
-
-    private fun animateFG(downView: View?, animateType: Animation, duration: Long, mSwipeCloseListener: OnSwipeListener?) {
-        //        boolean isLeft = false;
-        val translateAnimator: ObjectAnimator
-        if (animateType == Animation.OPEN) {
-            translateAnimator = ObjectAnimator.ofFloat(fgView, View.TRANSLATION_X, (if (isLeft) bgWidth2 else -bgWidth).toFloat())
-            translateAnimator.duration = duration
-            translateAnimator.interpolator = DecelerateInterpolator(1.5f)
-            translateAnimator.start()
-        } else
-        /*if (animateType == Animation.CLOSE)*/ {
-            translateAnimator = ObjectAnimator.ofFloat(fgView, View.TRANSLATION_X, 0f)
-            translateAnimator.duration = duration
-            translateAnimator.interpolator = DecelerateInterpolator(1.5f)
-            translateAnimator.start()
+            Animation.CLOSE -> {
+                translateAnimator = ObjectAnimator.ofFloat(foregroundView, View.TRANSLATION_X, 0f)
+                translateAnimator.duration = duration
+                translateAnimator.interpolator = DecelerateInterpolator(1.5f)
+                translateAnimator.start()
+            }
         }
 
-        translateAnimator.addListener(object : Animator.AnimatorListener {
+        translateAnimator?.addListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animation: Animator) {}
 
             override fun onAnimationEnd(animation: Animator) {
-                if (mSwipeCloseListener != null) {
+                listener?.apply {
                     if (animateType == Animation.OPEN) {
-                        mSwipeCloseListener.onSwipeOptionsOpened()
+                        onSwipeOptionsOpened()
                     } else if (animateType == Animation.CLOSE) {
-                        mSwipeCloseListener.onSwipeOptionsClosed()
+                        onSwipeOptionsClosed()
                     }
                 }
                 translateAnimator.removeAllListeners()
@@ -252,35 +220,35 @@ class RecyclerTouchListener(private val act: Activity, // Fixed properties
     }
 
     private fun handleTouchEvent(motionEvent: MotionEvent): Boolean {
-        var consumed = false
+        var touchConsumed = false
         if (swipeable) {
-            if (bgWidth < 2) {
-                if (act.findViewById<View>(bgViewID) != null) {
-                    bgWidth = act.findViewById<View>(bgViewID).width
+            if (rightBackgroundViewWidth < 2) {
+                if (activity.findViewById<View>(rightBackgroundViewId) != null) {
+                    rightBackgroundViewWidth = activity.findViewById<View>(rightBackgroundViewId).width
                 }
             }
-            if (bgWidth2 < 2) {
-                if (act.findViewById<View>(bgViewID2) != null) {
-                    bgWidth2 = act.findViewById<View>(bgViewID2).width
+            if (leftBackgroundViewWidth < 2) {
+                if (activity.findViewById<View>(leftBackgroundViewId) != null) {
+                    leftBackgroundViewWidth = activity.findViewById<View>(leftBackgroundViewId).width
                 }
             }
-            heightOutsideRView = screenHeight - mRecyclerView!!.height
+            heightOutsideRecyclerView = screenHeight - recyclerView.height
         }
 
         when (motionEvent.actionMasked) {
 
             // When finger touches screen
             MotionEvent.ACTION_DOWN -> {
-                if (!mPaused) {
+                if (!paused) {
 
                     // Find the child view that was touched (perform a hit test)
                     val rect = Rect()
-                    val childCount = mRecyclerView!!.childCount
-                    val listViewCoords = IntArray(2)
-                    mRecyclerView.getLocationOnScreen(listViewCoords)
+                    val childCount = recyclerView.childCount
+                    val coordinates = IntArray(2)
+                    recyclerView.getLocationOnScreen(coordinates)
                     // x and y values respective to the recycler view
-                    var x = motionEvent.rawX.toInt() - listViewCoords[0]
-                    var y = motionEvent.rawY.toInt() - listViewCoords[1]
+                    var x = motionEvent.rawX.toInt() - coordinates[0]
+                    var y = motionEvent.rawY.toInt() - coordinates[1]
                     var child: View
 
                     /*
@@ -288,7 +256,7 @@ class RecyclerTouchListener(private val act: Activity, // Fixed properties
                      * respective child and if it does, register that child as the touched view (touchedView)
                      */
                     for (i in 0 until childCount) {
-                        child = mRecyclerView.getChildAt(i)
+                        child = recyclerView.getChildAt(i)
                         child.getHitRect(rect)
                         if (rect.contains(x, y)) {
                             touchedView = child
@@ -297,16 +265,16 @@ class RecyclerTouchListener(private val act: Activity, // Fixed properties
                     }
 
                     if (touchedView != null) {
-                        val fgView1 = touchedView!!.findViewById<View>(fgViewID)
-                        val bgView1 = touchedView!!.findViewById<View>(bgViewID)
-                        val bgView21 = touchedView!!.findViewById<View>(bgViewID2)
-                        if (fgView1 == null || bgView1 == null && bgView21 == null) {
+                        val fgView = touchedView!!.findViewById<View>(foregroundViewId)
+                        val rightBgView = touchedView!!.findViewById<View>(rightBackgroundViewId)
+                        val leftBgView = touchedView!!.findViewById<View>(leftBackgroundViewId)
+                        if (fgView == null || (rightBgView == null && leftBgView == null)) {
                             return false
                         }
 
                         touchedX = motionEvent.rawX
                         touchedY = motionEvent.rawY
-                        touchedPosition = mRecyclerView.getChildAdapterPosition(touchedView!!)
+                        touchedPosition = recyclerView.getChildAdapterPosition(touchedView!!)
 
                         if (shouldIgnoreAction(touchedPosition)) {
                             touchedPosition = ListView.INVALID_POSITION
@@ -314,26 +282,24 @@ class RecyclerTouchListener(private val act: Activity, // Fixed properties
                         }
 
                         if (swipeable) {
-                            mVelocityTracker = VelocityTracker.obtain()
-                            mVelocityTracker!!.addMovement(motionEvent)
-                            fgView = touchedView!!.findViewById(fgViewID)
-                            bgView = touchedView!!.findViewById(bgViewID)
-                            bgView2 = touchedView!!.findViewById(bgViewID2)
-                            bgView!!.minimumHeight = fgView!!.height
-                            bgView2!!.minimumHeight = fgView!!.height
+                            foregroundView = touchedView!!.findViewById(foregroundViewId)
+                            rightBackgroundView = touchedView!!.findViewById(rightBackgroundViewId)
+                            leftBackgroundView = touchedView!!.findViewById(leftBackgroundViewId)
+                            rightBackgroundView?.minimumHeight = foregroundView?.height ?: 0
+                            leftBackgroundView?.minimumHeight = foregroundView?.height ?: 0
 
                             /*
-                             * bgVisible is true when the options menu is opened
-                             * This block is to register fgPartialViewClicked status - Partial view is the view that is still
+                             * backgroundVisible is true when the options menu is opened
+                             * This block is to register foregroundPartialViewClicked status - Partial view is the view that is still
                              * shown on the screen if the options width is < device width
                              */
-                            if (bgVisible && fgView != null) {
+                            if (backgroundVisible && foregroundView != null) {
                                 x = motionEvent.rawX.toInt()
                                 y = motionEvent.rawY.toInt()
-                                fgView!!.getGlobalVisibleRect(rect)
-                                fgPartialViewClicked = rect.contains(x, y)
+                                foregroundView!!.getGlobalVisibleRect(rect)
+                                foregroundPartialViewClicked = rect.contains(x, y)
                             } else {
-                                fgPartialViewClicked = false
+                                foregroundPartialViewClicked = false
                             }
                         }
                     }
@@ -341,298 +307,266 @@ class RecyclerTouchListener(private val act: Activity, // Fixed properties
                     /*
                      * If options menu is shown and the touched position is not the same as the row for which the
                      * options is displayed - close the options menu for the row which is displaying it
-                     * (bgVisibleView and bgVisiblePosition is used for this purpose which registers which view and
+                     * (backgroundVisibleView and backgroundVisiblePosition is used for this purpose which registers which view and
                      * which position has it's options menu opened)
                      */
-                    x = motionEvent.rawX.toInt()
-                    y = motionEvent.rawY.toInt()
-                    mRecyclerView.getHitRect(rect)
-                    if (swipeable && bgVisible) {
-                        if (touchedPosition != bgVisiblePosition) {
-                            closeVisibleBG(null)
+                    recyclerView.getHitRect(rect)
+                    if (swipeable && backgroundVisible) {
+                        if (touchedPosition != backgroundVisiblePosition) {
+                            closeVisibleBackground(null)
                         } else {
-                            consumed = true
+                            touchConsumed = true
                         }
                     }
                 }
             }
 
             MotionEvent.ACTION_CANCEL -> {
-
-                if (mVelocityTracker != null) {
-                    if (swipeable) {
-                        if (touchedView != null && isFgSwiping) {
-                            // cancel
-                            animateFG(touchedView, Animation.CLOSE, ANIMATION_STANDARD)
-                        }
-                        mVelocityTracker!!.recycle()
-                        mVelocityTracker = null
-                        isFgSwiping = false
-                        bgView = null
-                        bgView2 = null
+                if (swipeable) {
+                    if (touchedView != null && inSwiping) {
+                        // cancel
+                        animateForeground(Animation.CLOSE, ANIMATION_STANDARD)
                     }
-                    touchedX = 0f
-                    touchedY = 0f
-                    touchedView = null
-                    touchedPosition = ListView.INVALID_POSITION
+                    inSwiping = false
+                    rightBackgroundView = null
+                    leftBackgroundView = null
                 }
+                touchedX = 0f
+                touchedY = 0f
+                touchedView = null
+                touchedPosition = ListView.INVALID_POSITION
             }
 
             // When finger is lifted off the screen (after clicking, flinging, swiping, etc..)
             MotionEvent.ACTION_UP -> {
-                run {
+                if (swipeable && touchedPosition >= 0) {
+                    val finalDelta = motionEvent.rawX - touchedX
 
-                    if (mVelocityTracker != null && swipeable && touchedPosition >= 0) {
+                    // swipedLeft and swipedRight are true if the user swipes in the respective direction (no conditions)
+                    var swipedLeft = false
+                    var swipedRight = false
 
-                        // swipedLeft and swipedRight are true if the user swipes in the respective direction (no conditions)
-                        var swipedLeft = false
-                        var swipedRight = false
-                        /*
-                     * swipedLeftProper and swipedRightProper are true if user swipes in the respective direction
-                     * and if certain conditions are satisfied (given some few lines below)
-                     */
-                        var swipedLeftProper = false
-                        var swipedRightProper = false
+                    // swipedLeftProper and swipedRightProper are true if user swipes in the respective direction and if certain conditions are satisfied (given some few lines below)
+                    var swipedLeftProper = false
+                    var swipedRightProper = false
 
-                        val finalDelta = motionEvent.rawX - touchedX
+                    // if swiped in a direction, make that respective variable true
+                    if (inSwiping) {
+                        swipedLeft = finalDelta < 0
+                        swipedRight = finalDelta > 0
+                    }
 
-                        // if swiped in a direction, make that respective variable true
-                        if (isFgSwiping) {
-                            swipedLeft = finalDelta < 0
-                            swipedRight = finalDelta > 0
-                        }
-
-                        /*
+                    /*
                      * If the user has swiped more than half of the width of the options menu, or if the
                      * velocity of swiping is between min and max fling values
                      * "proper" variable are set true
                      */
-                        if (Math.abs(finalDelta) > Math.min(bgWidth, bgWidth2) / 2 && isFgSwiping) {
-                            swipedLeftProper = finalDelta < 0
-                            swipedRightProper = finalDelta > 0
-                            //                } else if (swipeable) {
-                            //                    mVelocityTracker.addMovement(motionEvent);
-                            //                    mVelocityTracker.computeCurrentVelocity(1000);
-                            //                    float velocityX = mVelocityTracker.getXVelocity();
-                            //                    float absVelocityX = Math.abs(velocityX);
-                            //                    float absVelocityY = Math.abs(mVelocityTracker.getYVelocity());
-                            //                    if (minFlingVel <= absVelocityX && absVelocityX <= maxFlingVel && absVelocityY < absVelocityX && isFgSwiping) {
-                            //                        // dismiss only if flinging in the same direction as dragging
-                            //                        swipedLeftProper = (velocityX < 0) == (finalDelta < 0);
-                            //                        swipedRightProper = (velocityX > 0) == (finalDelta > 0);
-                            //                    }
-                        }
+                    if (Math.abs(finalDelta) > Math.min(rightBackgroundViewWidth, leftBackgroundViewWidth) / 2 && inSwiping) {
+                        swipedLeftProper = finalDelta < 0
+                        swipedRightProper = finalDelta > 0
+                    }
 
-                        ///////// Manipulation of view based on the 4 variables mentioned above ///////////
+                    ///////// Manipulation of view based on the 4 variables mentioned above ///////////
 
-                        // if swiped left properly and options menu isn't already visible, animate the foreground to the left
-                        if (swipeable && !swipedRight && swipedLeftProper && touchedPosition != RecyclerView.NO_POSITION && !unSwipeableRows!!.contains(touchedPosition) && !bgVisible) {
+                    // if swiped left properly and options menu isn't already visible, animate the foreground to the left
+                    if (swipeable && !swipedRight && swipedLeftProper && touchedPosition != RecyclerView.NO_POSITION && !unSwipeableRows!!.contains(touchedPosition) && !backgroundVisible) {
+                        direction = Direction.RIGHT
+                        animateForeground(Animation.OPEN, ANIMATION_STANDARD)
+                        val downPosition = touchedPosition
+                        backgroundVisible = true
+                        backgroundVisibleView = foregroundView
+                        backgroundVisiblePosition = downPosition
+                    } else if (swipeable && !swipedLeft && swipedRightProper && touchedPosition != RecyclerView.NO_POSITION && !unSwipeableRows!!.contains(touchedPosition) && !backgroundVisible) {
+                        direction = Direction.LEFT
+                        animateForeground(Animation.OPEN, ANIMATION_STANDARD)
+                        val downPosition = touchedPosition
+                        backgroundVisible = true
+                        backgroundVisibleView = foregroundView
+                        backgroundVisiblePosition = downPosition
+                    } else if (swipeable && !swipedLeft && swipedRightProper && touchedPosition != RecyclerView.NO_POSITION && !unSwipeableRows!!.contains(touchedPosition) && backgroundVisible) {
+                        direction = Direction.RIGHT
+                        animateForeground(Animation.CLOSE, ANIMATION_STANDARD)
+                        backgroundVisible = false
+                        backgroundVisibleView = null
+                        backgroundVisiblePosition = -1
+                    } else if (swipeable && !swipedRight && swipedLeftProper && touchedPosition != RecyclerView.NO_POSITION && !unSwipeableRows!!.contains(touchedPosition) && backgroundVisible) {
+                        direction = Direction.LEFT
+                        animateForeground(Animation.CLOSE, ANIMATION_STANDARD)
+                        backgroundVisible = false
+                        backgroundVisibleView = null
+                        backgroundVisiblePosition = -1
+                    } else if (swipeable && swipedLeft && !backgroundVisible) {
+                        // cancel
+                        val tempBgView = rightBackgroundView
+                        direction = Direction.RIGHT
+                        animateForeground(Animation.CLOSE, ANIMATION_STANDARD, object : OnSwipeListener {
+                            override fun onSwipeOptionsClosed() {
+                                if (tempBgView != null) tempBgView.visibility = View.VISIBLE
+                            }
 
-                            val downPosition = touchedPosition
-                            //TODO - speed
-                            isLeft = false
-                            animateFG(touchedView, Animation.OPEN, ANIMATION_STANDARD)
-                            bgVisible = true
-                            bgVisibleView = fgView
-                            bgVisiblePosition = downPosition
-                        } else if (swipeable && !swipedLeft && swipedRightProper && touchedPosition != RecyclerView.NO_POSITION && !unSwipeableRows!!.contains(touchedPosition) && !bgVisible) {
+                            override fun onSwipeOptionsOpened() {}
+                        })
 
-                            val downPosition = touchedPosition
-                            //TODO - speed
-                            isLeft = true
-                            animateFG(touchedView, Animation.OPEN, ANIMATION_STANDARD)
-                            bgVisible = true
-                            bgVisibleView = fgView
-                            bgVisiblePosition = downPosition
-                        } else if (swipeable && !swipedLeft && swipedRightProper && touchedPosition != RecyclerView.NO_POSITION && !unSwipeableRows!!.contains(touchedPosition) && bgVisible) {
+                        backgroundVisible = false
+                        backgroundVisibleView = null
+                        backgroundVisiblePosition = -1
+                    } else if (swipeable && swipedRight && !backgroundVisible) {
+                        // cancel
+                        val tempBgView = rightBackgroundView
+                        direction = Direction.LEFT
+                        animateForeground(Animation.CLOSE, ANIMATION_STANDARD, object : OnSwipeListener {
+                            override fun onSwipeOptionsClosed() {
+                                if (tempBgView != null) tempBgView.visibility = View.VISIBLE
+                            }
 
-                            //TODO - speed
-                            isLeft = false
-                            animateFG(touchedView, Animation.CLOSE, ANIMATION_STANDARD)
-                            bgVisible = false
-                            bgVisibleView = null
-                            bgVisiblePosition = -1
-                        } else if (swipeable && !swipedRight && swipedLeftProper && touchedPosition != RecyclerView.NO_POSITION && !unSwipeableRows!!.contains(touchedPosition) && bgVisible) {
+                            override fun onSwipeOptionsOpened() {}
+                        })
 
-                            //TODO - speed
-                            isLeft = true
-                            animateFG(touchedView, Animation.CLOSE, ANIMATION_STANDARD)
-                            bgVisible = false
-                            bgVisibleView = null
-                            bgVisiblePosition = -1
-                        } else if (swipeable && swipedLeft && !bgVisible) {
-                            // cancel
-                            val tempBgView = bgView
-                            isLeft = false
-                            animateFG(touchedView, Animation.CLOSE, ANIMATION_STANDARD, object : OnSwipeListener {
-                                override fun onSwipeOptionsClosed() {
-                                    if (tempBgView != null) tempBgView.visibility = View.VISIBLE
-                                }
+                        backgroundVisible = false
+                        backgroundVisibleView = null
+                        backgroundVisiblePosition = -1
+                    } else if (swipeable && swipedRight) {
+                        // cancel
+                        direction = Direction.RIGHT
+                        animateForeground(Animation.CLOSE, ANIMATION_STANDARD)
+                        backgroundVisible = false
+                        backgroundVisibleView = null
+                        backgroundVisiblePosition = -1
+                    } else if (swipeable && swipedLeft) {
+                        // cancel
+                        direction = Direction.LEFT
+                        animateForeground(Animation.CLOSE, ANIMATION_STANDARD)
+                        backgroundVisible = false
+                        backgroundVisibleView = null
+                        backgroundVisiblePosition = -1
+                    } else if (!swipedRight && !swipedLeft) {
+                        // if partial foreground view is clicked (see ACTION_DOWN) bring foreground back to original position
+                        // backgroundVisible is true automatically since it's already checked in ACTION_DOWN block
+                        if (swipeable && foregroundPartialViewClicked) {
+                            animateForeground(Animation.CLOSE, ANIMATION_STANDARD)
+                            backgroundVisible = false
+                            backgroundVisibleView = null
+                            backgroundVisiblePosition = -1
+                        } else if (swipeable && backgroundVisible) {
+                            val optionId = getOptionViewId(motionEvent)
+                            if (optionId >= 0 && touchedPosition >= 0) {
+                                touchConsumed = true
+                                val downPosition = touchedPosition
+                                closeVisibleBackground(object : OnSwipeListener {
+                                    override fun onSwipeOptionsClosed() {
+                                        // TODO: return DataHolder associated with downPosition
+                                        onSwipeOptionsClickListener?.onSwipeOptionClicked(optionId, downPosition)
+                                    }
 
-                                override fun onSwipeOptionsOpened() {}
-                            })
-
-                            bgVisible = false
-                            bgVisibleView = null
-                            bgVisiblePosition = -1
-                        } else if (swipeable && swipedRight && !bgVisible) {
-                            // cancel
-                            val tempBgView = bgView
-                            isLeft = true
-                            animateFG(touchedView, Animation.CLOSE, ANIMATION_STANDARD, object : OnSwipeListener {
-                                override fun onSwipeOptionsClosed() {
-                                    if (tempBgView != null) tempBgView.visibility = View.VISIBLE
-                                }
-
-                                override fun onSwipeOptionsOpened() {}
-                            })
-
-                            bgVisible = false
-                            bgVisibleView = null
-                            bgVisiblePosition = -1
-                        } else if (swipeable && swipedRight) {
-                            // cancel
-                            isLeft = false
-                            animateFG(touchedView, Animation.CLOSE, ANIMATION_STANDARD)
-                            bgVisible = false
-                            bgVisibleView = null
-                            bgVisiblePosition = -1
-                        } else if (swipeable && swipedLeft) {
-                            // cancel
-                            isLeft = true
-                            animateFG(touchedView, Animation.CLOSE, ANIMATION_STANDARD)
-                            bgVisible = false
-                            bgVisibleView = null
-                            bgVisiblePosition = -1
-                        } else if (!swipedRight && !swipedLeft) {
-                            // if partial foreground view is clicked (see ACTION_DOWN) bring foreground back to original position
-                            // bgVisible is true automatically since it's already checked in ACTION_DOWN block
-                            if (swipeable && fgPartialViewClicked) {
-                                animateFG(touchedView, Animation.CLOSE, ANIMATION_STANDARD)
-                                bgVisible = false
-                                bgVisibleView = null
-                                bgVisiblePosition = -1
-                            } else if (swipeable && bgVisible) {
-                                val optionID = getOptionViewID(motionEvent)
-                                if (optionID >= 0 && touchedPosition >= 0) {
-                                    consumed = true
-                                    val downPosition = touchedPosition
-                                    closeVisibleBG(object : OnSwipeListener {
-                                        override fun onSwipeOptionsClosed() {
-                                            mBgClickListener!!.onSwipeOptionClicked(optionID, downPosition)
-                                        }
-
-                                        override fun onSwipeOptionsOpened() {}
-                                    })
-                                }
+                                    override fun onSwipeOptionsOpened() {}
+                                })
                             }
                         }
                     }
-                    // if clicked and not swiped
-
-                    if (swipeable) {
-                        mVelocityTracker!!.recycle()
-                        mVelocityTracker = null
-                    }
-                    touchedX = 0f
-                    touchedY = 0f
-                    touchedView = null
-                    touchedPosition = ListView.INVALID_POSITION
-                    isFgSwiping = false
-                    bgView = null
-                    bgView2 = null
                 }
+                // if clicked and not swiped
+
+                touchedX = 0f
+                touchedY = 0f
+                touchedView = null
+                touchedPosition = ListView.INVALID_POSITION
+                inSwiping = false
+                rightBackgroundView = null
+                leftBackgroundView = null
             }
 
             // when finger is moving across the screen (and not yet lifted)
             MotionEvent.ACTION_MOVE -> {
-                if (mVelocityTracker != null && !mPaused && swipeable) {
+                if (!paused && swipeable) {
 
-                    mVelocityTracker!!.addMovement(motionEvent)
                     val deltaX = motionEvent.rawX - touchedX
                     val deltaY = motionEvent.rawY - touchedY
 
                     /*
-                     * isFgSwiping variable which is set to true here is used to alter the swipedLeft, swipedRightProper
+                     * inSwiping variable which is set to true here is used to alter the swipedLeft, swipedRightProper
                      * variables in "ACTION_UP" block by checking if user is actually swiping at present or not
                      */
-                    if (!isFgSwiping && Math.abs(deltaX) > touchSlop && Math.abs(deltaY) < Math.abs(deltaX) / 2) {
-                        isFgSwiping = true
-                        mSwipingSlop = if (deltaX > 0) touchSlop else -touchSlop
+                    if (!inSwiping && Math.abs(deltaX) > touchSlop && Math.abs(deltaY) < Math.abs(deltaX) / 2) {
+                        inSwiping = true
+                        defaultSwipingSlop = if (deltaX > 0) touchSlop else -touchSlop
                     }
 
                     // This block moves the foreground along with the finger when swiping
-                    if (swipeable && isFgSwiping && !unSwipeableRows!!.contains(touchedPosition)) {
-                        if (bgView == null) {
-                            bgView = touchedView!!.findViewById(bgViewID)
-                            bgView!!.visibility = View.VISIBLE
+                    if (swipeable && inSwiping && !unSwipeableRows!!.contains(touchedPosition)) {
+                        if (rightBackgroundView == null) {
+                            rightBackgroundView = touchedView!!.findViewById(rightBackgroundViewId)
+                            rightBackgroundView?.visibility = View.VISIBLE
                         }
-                        if (bgView2 == null) {
-                            bgView2 = touchedView!!.findViewById(bgViewID2)
-                            bgView2!!.visibility = View.VISIBLE
+                        if (leftBackgroundView == null) {
+                            leftBackgroundView = touchedView!!.findViewById(leftBackgroundViewId)
+                            leftBackgroundView?.visibility = View.VISIBLE
                         }
 
                         // if fg is being swiped left
-                        if (deltaX < 0 && Math.abs(deltaX) > touchSlop && !bgVisible) {
-                            val translateAmount = deltaX - mSwipingSlop
-                            //                        if ((Math.abs(translateAmount) > bgWidth ? -bgWidth : translateAmount) <= 0) {
+                        if (deltaX < 0 && Math.abs(deltaX) > touchSlop && !backgroundVisible) {
+                            val translateAmount = deltaX - defaultSwipingSlop
 
                             // swipe fg till width of bg. If swiped further, nothing happens (stalls at width of bg)
-                            fgView!!.translationX = if (Math.abs(translateAmount) > bgWidth) -bgWidth.toFloat() else translateAmount
-                            if (fgView!!.translationX > 0) fgView!!.translationX = 0f
-                            //                        }
-                        } else if (deltaX > 0 && Math.abs(deltaX) > touchSlop && !bgVisible) {
-                            val translateAmount = deltaX - mSwipingSlop
-                            //                        if ((Math.abs(translateAmount) > bgWidth ? -bgWidth : translateAmount) <= 0) {
+                            foregroundView?.apply {
+                                translationX = if (Math.abs(translateAmount) > rightBackgroundViewWidth) -rightBackgroundViewWidth.toFloat() else translateAmount
+                                if (translationX > 0) translationX = 0f
+                            }
+                        } else if (deltaX > 0 && Math.abs(deltaX) > touchSlop && !backgroundVisible) {
+                            val translateAmount = deltaX - defaultSwipingSlop
 
                             // swipe fg till width of bg. If swiped further, nothing happens (stalls at width of bg)
-                            fgView!!.translationX = if (Math.abs(translateAmount) > bgWidth2) bgWidth2.toFloat() else translateAmount
-                            if (fgView!!.translationX < 0) fgView!!.translationX = 0f
-                            //                        }
-                        } else if (deltaX > 0 && !isLeft && bgVisible) {
+                            foregroundView?.apply {
+                                translationX = if (Math.abs(translateAmount) > leftBackgroundViewWidth) leftBackgroundViewWidth.toFloat() else translateAmount
+                                if (translationX < 0) translationX = 0f
+                            }
+                        } else if (deltaX > 0 && direction == Direction.RIGHT && backgroundVisible) {
                             // for closing rightOptions
-                            val translateAmount = deltaX - mSwipingSlop - bgWidth
+                            val translateAmount = deltaX - defaultSwipingSlop - rightBackgroundViewWidth
 
                             // swipe fg till it reaches original position. If swiped further, nothing happens (stalls at 0)
-                            fgView!!.translationX = if (translateAmount > 0) 0f else translateAmount
-                        } else if (deltaX < 0 && isLeft && bgVisible) {
+                            foregroundView?.apply {
+                                translationX = if (translateAmount > 0) 0f else translateAmount
+                            }
+                        } else if (deltaX < 0 && direction == Direction.LEFT && backgroundVisible) {
                             // for closing rightOptions
-                            val translateAmount = deltaX - mSwipingSlop + bgWidth2
+                            val translateAmount = deltaX - defaultSwipingSlop + leftBackgroundViewWidth
 
                             // swipe fg till it reaches original position. If swiped further, nothing happens (stalls at 0)
-                            fgView!!.translationX = if (translateAmount < 0) 0f else translateAmount
-                        }// if fg is being swiped left - Amin
-                        // if fg is being swiped right
-                        // if fg is being swiped right - Amin
-                        return true
-                    } else if (swipeable && isFgSwiping && unSwipeableRows!!.contains(touchedPosition)) {
-                        if (deltaX < touchSlop && !bgVisible) {
-                            val translateAmount = deltaX - mSwipingSlop
-                            if (bgView == null)
-                                bgView = touchedView!!.findViewById(bgViewID)
-
-                            if (bgView != null)
-                                bgView!!.visibility = View.GONE
-
-                            // swipe fg till width of bg. If swiped further, nothing happens (stalls at width of bg)
-                            fgView!!.translationX = translateAmount / 5
-                            if (fgView!!.translationX > 0) fgView!!.translationX = 0f
-
+                            foregroundView?.apply {
+                                translationX = if (translateAmount < 0) 0f else translateAmount
+                            }
                         }
                         return true
-                    }// moves the fg slightly to give the illusion of an "unswipeable" row
+                    } else if (swipeable && inSwiping && unSwipeableRows!!.contains(touchedPosition)) {
+                        if (deltaX < touchSlop && !backgroundVisible) {
+                            val translateAmount = deltaX - defaultSwipingSlop
+                            if (rightBackgroundView == null) rightBackgroundView = touchedView!!.findViewById(rightBackgroundViewId)
+                            rightBackgroundView?.visibility = View.GONE
+
+                            // swipe fg till width of bg. If swiped further, nothing happens (stalls at width of bg)
+                            foregroundView?.apply {
+                                translationX = translateAmount / 5
+                                if (translationX > 0) translationX = 0f
+                            }
+                        }
+                        return true
+                    }
                 }
             }
         }
-        return consumed
+        return touchConsumed
     }
 
     private fun shouldIgnoreAction(touchedPosition: Int): Boolean {
-        return mRecyclerView == null || ignoredViewTypes.contains(mRecyclerView.adapter!!.getItemViewType(touchedPosition))
+        return ignoredViewTypes.contains(recyclerView.adapter?.getItemViewType(touchedPosition))
     }
 
     private enum class Animation {
         OPEN, CLOSE
+    }
+
+    private enum class Direction {
+        LEFT, RIGHT
     }
 
     interface OnSwipeOptionsClickListener {
@@ -647,7 +581,8 @@ class RecyclerTouchListener(private val act: Activity, // Fixed properties
     }
 
     companion object {
-        private val TAG = "RecyclerTouchListener"
+        private const val ANIMATION_STANDARD = 300L
+        private const val ANIMATION_CLOSE = 150L
     }
 
     // TEST CODE:
