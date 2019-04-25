@@ -14,6 +14,7 @@ import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.aminography.primeadapter.callback.OnRecyclerViewItemClickListener
+import com.aminography.primeadapter.callback.OnRecyclerViewItemExpansionListener
 import com.aminography.primeadapter.callback.PrimeDelegate
 import com.aminography.primeadapter.divider.SkipDividerItemDecorator
 import com.aminography.primeadapter.draghelper.DragHelper
@@ -33,6 +34,7 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
     private var dataList = mutableListOf<PrimeDataHolder>()
     private var itemClickListener: OnRecyclerViewItemClickListener? = null
     private var itemDragListener: OnRecyclerViewItemDragListener? = null
+    private var itemExpansionListener: OnRecyclerViewItemExpansionListener? = null
     private var itemTouchHelper: ItemTouchHelper? = null
     private var dragHelper: DragHelper? = null
     private var recyclerView: RecyclerView? = null
@@ -140,6 +142,7 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
         if (isExpandable) {
             dataHolder.expanded = !dataHolder.expanded
             notifyItemChanged(dataHolder.listPosition)
+            itemExpansionListener?.onItemExpansion(dataHolder)
         }
         return isExpandable
     }
@@ -236,6 +239,7 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
         private var recycledViewPool: RecyclerView.RecycledViewPool? = null
         private var itemClickListener: OnRecyclerViewItemClickListener? = null
         private var itemDragListener: OnRecyclerViewItemDragListener? = null
+        private var itemExpansionListener: OnRecyclerViewItemExpansionListener? = null
         private var dividerDrawable: Drawable? = null
         private var dividerDrawableInsetLeft: Int = 0
         private var dividerDrawableInsetTop: Int = 0
@@ -315,6 +319,11 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
             return this
         }
 
+        fun setItemExpandListener(itemExpansionListener: OnRecyclerViewItemExpansionListener): AdapterBuilder {
+            this.itemExpansionListener = itemExpansionListener
+            return this
+        }
+
         fun setDivider(dividerDrawable: Drawable?, insetLeft: Int = 0, insetTop: Int = 0, insetRight: Int = 0, insetBottom: Int = 0): AdapterBuilder {
             this.dividerDrawable = dividerDrawable
             dividerDrawableInsetLeft = insetLeft
@@ -345,6 +354,7 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
             t.recycledViewPool = recycledViewPool
             t.itemClickListener = itemClickListener
             t.itemDragListener = itemDragListener
+            t.itemExpansionListener = itemExpansionListener
 
             snapHelper?.attachToRecyclerView(recyclerView)
 
