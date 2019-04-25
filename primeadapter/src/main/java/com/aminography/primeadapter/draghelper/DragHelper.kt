@@ -21,12 +21,11 @@ internal class DragHelper(private val callback: IDragHelperCallback) : ItemTouch
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
         return if (recyclerView.layoutManager is GridLayoutManager) {
             val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-//            val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
             val swipeFlags = 0
             makeMovementFlags(dragFlags, swipeFlags)
         } else {
             val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
-            val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
+            val swipeFlags = callback.swipeToDismissFlags()
             makeMovementFlags(dragFlags, swipeFlags)
         }
     }

@@ -107,6 +107,8 @@ abstract class PrimeAdapter : RecyclerView.Adapter<PrimeViewHolder<PrimeDataHold
 
                 override fun isSwipeableToDismiss(): Boolean = isSwipeableToDismiss
 
+                override fun swipeToDismissFlags(): Int = ItemTouchHelper.START or ItemTouchHelper.END
+
                 override fun onItemMoved(fromPosition: Int, toPosition: Int): Boolean {
                     dataList.add(toPosition, dataList.removeAt(fromPosition))
 

@@ -11,6 +11,8 @@ internal interface IDragHelperCallback {
 
     fun isSwipeableToDismiss(): Boolean
 
+    fun swipeToDismissFlags(): Int
+
     fun isLongPressDraggable(): Boolean
 
     fun isOnlySameViewTypeReplaceable(): Boolean
