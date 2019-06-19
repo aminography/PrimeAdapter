@@ -3,6 +3,7 @@
 [![Android Arsenal]( https://img.shields.io/badge/Android%20Arsenal-PrimeAdapter-brightgreen.svg?style=flat )]( https://android-arsenal.com/details/1/7178)
 [![API](https://img.shields.io/badge/API-11%2B-ffaa00.svg?style=flat)](https://android-arsenal.com/api?level=11)
 [![Download](https://api.bintray.com/packages/aminography/maven/PrimeAdapter/images/download.svg) ](https://bintray.com/aminography/maven/PrimeAdapter/_latestVersion)
+[![Open-Source](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/aminography/PrimeAdapter)
   
 **`PrimeAdapter`** makes working with `RecyclerView` easier by separating required code in a few simple and well-structured classes.
 It brings simplicity when you have multiple view types in a `RecyclerView`.
