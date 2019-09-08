@@ -32,27 +32,3 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-
-ext {
-    bintrayRepo = 'maven'
-    bintrayName = 'PrimeAdapter'
-    orgName = 'aminography'
-
-    publishedGroupId = 'com.aminography'
-    artifact = 'primeadapter-processor'
-    libraryVersion = "1.0.9"
-
-    libraryName = 'PrimeAdapter'
-    libraryDescription = 'PrimeAdapter makes working with RecyclerView easier.'
-
-    siteUrl = 'https://github.com/aminography/PrimeAdapter'
-    gitUrl = 'https://github.com/aminography/PrimeAdapter.git'
-
-    developerId = 'aminography'
-    developerName = 'Mohammad Amin Hassani'
-    developerEmail = 'aminography@gmail.com'
-
-    licenseName = 'The Apache Software License, Version 2.0'
-    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-    allLicenses = ["Apache-2.0"]
-}
