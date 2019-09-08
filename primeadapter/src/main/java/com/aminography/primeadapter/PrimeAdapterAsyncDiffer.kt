@@ -249,7 +249,7 @@ abstract class PrimeAdapterAsyncDiffer : RecyclerView.Adapter<PrimeViewHolder<Pr
     }
 
     open fun replaceDataList(modelList: List<PrimeDataHolder>) {
-        differ.submitList(modelList)
+        differ.submitList(ArrayList(modelList))
     }
 
     class AdapterBuilder(private val recyclerView: RecyclerView) {
