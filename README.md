@@ -14,7 +14,9 @@ You can use **`PrimeAdapter`** in both [Kotlin](https://github.com/aminography/P
 | Custom Divider | Draggability | Expandability | 
 | --- | --- | --- | 
 ![Example](https://media.giphy.com/media/mzhpG2SByqHtrSLCZ8/giphy.gif) | ![Example](https://media.giphy.com/media/64amX8wGab3BY8czuS/giphy.gif) | ![Example](https://media.giphy.com/media/TamHIVOnBDk1m1vdUd/giphy.gif) | 
-  
+
+
+</b>
 Download
 --------
 Add the following lines to your `build.gradle` file:
@@ -40,7 +42,8 @@ dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.0'
 }
 ```
-  
+
+</b>  
 How to use `PrimeAdapter`?
 --------
   
@@ -104,6 +107,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
 }
 ```
 
+</b>
 Extra Features
 --------
 
@@ -132,6 +136,7 @@ val adapter = PrimeAdapter.with(recyclerView)
 adapter.setItemClickListener(onRecyclerViewItemClickListener)
 ```
 
+</b>
 ### Draggability
 **`PrimeAdapter`** helps you make the `RecyclerView` items draggable.
 It would be activated/deactivated by calling `setDraggable(true)`/`setDraggable(false)` on a builder or an adapter instance.
@@ -159,6 +164,7 @@ class ActorViewHolder(
 }
 ```
 
+</b>
 ### Expandability
 Another feature of **`PrimeAdapter`** is making the implementation of `RecyclerView` items expansion easier.
 Calling the `setExpandable(true)`/`setExpandable(false)` on a builder or on adapter instance changes its activation.
@@ -169,6 +175,7 @@ adapter.setExpandable(true)
 
 To see how to implement it, please check the [related example code][2].
 
+</b>
 ### Custom Skippable Divider
 Showing custom divider lines is a good feature that **`PrimeAdapter`** provides.
 Calling the `setDivider()` on a builder or on adapter instance leads to show default divider line between items.
@@ -199,6 +206,7 @@ adapter.getItem(position).hasDivider = false
 adapter.notifyDataSetChanged()
 ```
 
+</b>
 ProGuard
 --------
 If you want to create a release version of your app, you need to include the following lines in the app level proguard file: 
@@ -209,6 +217,7 @@ If you want to create a release version of your app, you need to include the fol
 }
 ```
 
+</b>
 License
 --------
 ```
