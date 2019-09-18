@@ -49,7 +49,7 @@ How to use `PrimeAdapter`?
 --------
   
 You should create both **data holder** and **view holder** classes for each type of view that you want to show in `RecyclerView`.
-1. It's necessary to add [`@DataHolder`](https://github.com/aminography/PrimeAdapter) annotation above all data holder classes which inherits from `PrimeDataHolder`:
+**1.** It's necessary to add [`@DataHolder`](https://github.com/aminography/PrimeAdapter) annotation above all data holder classes which inherits from `PrimeDataHolder`:
 
 ```kotlin
 @DataHolder
@@ -58,7 +58,7 @@ data class ActorDataHolder(
 ) : PrimeDataHolder()
 ```
  
-2. Each view holder class should inherit from `PrimeViewHolder` and specify related data holder as a type parameter like following:
+**2.** Each view holder class should inherit from `PrimeViewHolder` and specify related data holder as a type parameter like following:
 
 ```kotlin
 class ActorViewHolder(
@@ -73,7 +73,7 @@ class ActorViewHolder(
 }
 ```
   
-3. Your custom adapter class must inherit from **`PrimeAdapter`** that decides to make view holder instance based on data holder type.
+**3.** Your custom adapter class must inherit from **`PrimeAdapter`** that decides to make view holder instance based on data holder type.
 Follow this pattern:
 
 ```kotlin
@@ -88,7 +88,7 @@ class ActorAdapter : PrimeAdapter() {
 }
 ```
 
-4. Finally, you can instantiate your custom adapter using **`PrimeAdapter`** builder mechanism.
+**4.** Finally, you can instantiate your custom adapter using **`PrimeAdapter`** builder mechanism.
 
 ```kotlin
 override fun onCreate(savedInstanceState: Bundle?) {
