@@ -48,7 +48,7 @@ dependencies {
 How to use `PrimeAdapter`?
 --------
   
-You should create both **data holder** and **view holder** classes for each type of view that you want to show in `RecyclerView`.
+You should create both **data holder** and **view holder** classes for each type of view that you want to show in `RecyclerView`.<br/>
 **1.** It's necessary to add [`@DataHolder`](https://github.com/aminography/PrimeAdapter) annotation above all data holder classes which inherits from `PrimeDataHolder`:
 
 ```kotlin
