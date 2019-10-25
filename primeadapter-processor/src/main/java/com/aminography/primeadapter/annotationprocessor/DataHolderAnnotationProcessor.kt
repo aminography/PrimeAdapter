@@ -103,6 +103,7 @@ class DataHolderAnnotationProcessor : AbstractProcessor() {
         writeToSource(stringBuilder.toString(), packageName, fileName)
     }
 
+    @Suppress("SameParameterValue")
     private fun writeToSource(content: String, packageName: String, fileName: String) {
         var filerSourceFile: FileObject
         filer?.let {

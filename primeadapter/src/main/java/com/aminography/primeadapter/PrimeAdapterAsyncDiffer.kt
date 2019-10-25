@@ -214,7 +214,7 @@ abstract class PrimeAdapterAsyncDiffer : RecyclerView.Adapter<PrimeViewHolder<Pr
     fun addItem(dataHolder: PrimeDataHolder, position: Int = 0, animate: Boolean = true) {
         val dataList = ArrayList(differ.currentList)
         dataList.add(position, dataHolder)
-        for (i in position..(dataList.size - 1)) dataList[i].listPosition = i
+        for (i in position until dataList.size) dataList[i].listPosition = i
 
         differ.submitList(dataList)
 
@@ -230,7 +230,7 @@ abstract class PrimeAdapterAsyncDiffer : RecyclerView.Adapter<PrimeViewHolder<Pr
     fun removeItem(position: Int, animate: Boolean) {
         val dataList = ArrayList(differ.currentList)
         dataList.removeAt(position)
-        for (i in position..(dataList.size - 1)) dataList[i].listPosition = i
+        for (i in position until dataList.size) dataList[i].listPosition = i
 
         differ.submitList(dataList)
 
