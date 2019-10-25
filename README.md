@@ -14,7 +14,9 @@ You can use **`PrimeAdapter`** in both [Kotlin](https://github.com/aminography/P
 | Custom Divider | Draggability | Expandability | 
 | --- | --- | --- | 
 ![Example](https://media.giphy.com/media/mzhpG2SByqHtrSLCZ8/giphy.gif) | ![Example](https://media.giphy.com/media/64amX8wGab3BY8czuS/giphy.gif) | ![Example](https://media.giphy.com/media/TamHIVOnBDk1m1vdUd/giphy.gif) | 
-  
+
+<br/>
+
 Download
 --------
 Add the following lines to your `build.gradle` file:
@@ -40,12 +42,17 @@ dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.0'
 }
 ```
-  
+
+<br/> 
+
 How to use `PrimeAdapter`?
 --------
   
 You should create both **data holder** and **view holder** classes for each type of view that you want to show in `RecyclerView`.
-1. It's necessary to add [`@DataHolder`](https://github.com/aminography/PrimeAdapter) annotation above all data holder classes which inherits from `PrimeDataHolder`:
+
+<br/>
+
+**1.** It's necessary to add [`@DataHolder`](https://github.com/aminography/PrimeAdapter) annotation above all data holder classes which inherits from `PrimeDataHolder`:
 
 ```kotlin
 @DataHolder
@@ -54,7 +61,7 @@ data class ActorDataHolder(
 ) : PrimeDataHolder()
 ```
  
-2. Each view holder class should inherit from `PrimeViewHolder` and specify related data holder as a type parameter like following:
+**2.** Each view holder class should inherit from `PrimeViewHolder` and specify related data holder as a type parameter like following:
 
 ```kotlin
 class ActorViewHolder(
@@ -69,7 +76,7 @@ class ActorViewHolder(
 }
 ```
   
-3. Your custom adapter class must inherit from **`PrimeAdapter`** that decides to make view holder instance based on data holder type.
+**3.** Your custom adapter class must inherit from **`PrimeAdapter`** that decides to make view holder instance based on data holder type.
 Follow this pattern:
 
 ```kotlin
@@ -84,7 +91,7 @@ class ActorAdapter : PrimeAdapter() {
 }
 ```
 
-4. Finally, you can instantiate your custom adapter using **`PrimeAdapter`** builder mechanism.
+**4.** Finally, you can instantiate your custom adapter using **`PrimeAdapter`** builder mechanism.
 
 ```kotlin
 override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,6 +110,8 @@ override fun onCreate(savedInstanceState: Bundle?) {
     adapter.replaceDataList(dataList)
 }
 ```
+
+<br/>
 
 Extra Features
 --------
@@ -132,6 +141,8 @@ val adapter = PrimeAdapter.with(recyclerView)
 adapter.setItemClickListener(onRecyclerViewItemClickListener)
 ```
 
+<br/>
+
 ### Draggability
 **`PrimeAdapter`** helps you make the `RecyclerView` items draggable.
 It would be activated/deactivated by calling `setDraggable(true)`/`setDraggable(false)` on a builder or an adapter instance.
@@ -159,6 +170,8 @@ class ActorViewHolder(
 }
 ```
 
+<br/>
+
 ### Expandability
 Another feature of **`PrimeAdapter`** is making the implementation of `RecyclerView` items expansion easier.
 Calling the `setExpandable(true)`/`setExpandable(false)` on a builder or on adapter instance changes its activation.
@@ -168,6 +181,8 @@ adapter.setExpandable(true)
 ```
 
 To see how to implement it, please check the [related example code][2].
+
+<br/>
 
 ### Custom Skippable Divider
 Showing custom divider lines is a good feature that **`PrimeAdapter`** provides.
@@ -199,6 +214,8 @@ adapter.getItem(position).hasDivider = false
 adapter.notifyDataSetChanged()
 ```
 
+<br/>
+
 ProGuard
 --------
 If you want to create a release version of your app, you need to include the following lines in the app level proguard file: 
@@ -208,6 +225,8 @@ If you want to create a release version of your app, you need to include the fol
     @com.aminography.primeadapter.annotation.DataHolder *;
 }
 ```
+
+<br/>
 
 License
 --------
