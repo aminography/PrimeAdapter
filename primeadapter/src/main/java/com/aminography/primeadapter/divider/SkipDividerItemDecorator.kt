@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.LinearLayout
 import com.aminography.primeadapter.PrimeAdapter
+import com.aminography.primeadapter.PrimeAdapterAsyncDiffer
 
 /**
  * Created by aminography on 9/4/2018.
@@ -41,7 +42,12 @@ internal class SkipDividerItemDecorator(private val divider: Drawable? = null) :
         for (i in 0 until childCount) {
             val child = parent.getChildAt(i)
             val position = parent.getChildAdapterPosition(child)
-            if (position != RecyclerView.NO_POSITION && position != parent.adapter!!.itemCount - 1 && (parent.adapter as PrimeAdapter).getItem(position).hasDivider) {
+            val hasDivider = when (parent.adapter) {
+                is PrimeAdapter -> (parent.adapter as PrimeAdapter).getItem(position).hasDivider
+                is PrimeAdapterAsyncDiffer -> (parent.adapter as PrimeAdapterAsyncDiffer).getItem(position).hasDivider
+                else -> false
+            }
+            if (position != RecyclerView.NO_POSITION && position != parent.adapter!!.itemCount - 1 && hasDivider) {
                 parent.getDecoratedBoundsWithMargins(child, bounds)
                 val bottom = bounds.bottom + Math.round(child.translationY)
                 divider?.apply {
