@@ -42,12 +42,14 @@ internal class SkipDividerItemDecorator(private val divider: Drawable? = null) :
         for (i in 0 until childCount) {
             val child = parent.getChildAt(i)
             val position = parent.getChildAdapterPosition(child)
-            val hasDivider = when (parent.adapter) {
-                is PrimeAdapter -> (parent.adapter as PrimeAdapter).getItem(position).hasDivider
-                is PrimeAdapterAsyncDiffer -> (parent.adapter as PrimeAdapterAsyncDiffer).getItem(position).hasDivider
+            val hasDivider = when {
+                position == RecyclerView.NO_POSITION -> false
+                position == parent.adapter!!.itemCount - 1 -> false
+                parent.adapter is PrimeAdapter -> (parent.adapter as PrimeAdapter).getItem(position).hasDivider
+                parent.adapter is PrimeAdapterAsyncDiffer -> (parent.adapter as PrimeAdapterAsyncDiffer).getItem(position).hasDivider
                 else -> false
             }
-            if (position != RecyclerView.NO_POSITION && position != parent.adapter!!.itemCount - 1 && hasDivider) {
+            if (hasDivider) {
                 parent.getDecoratedBoundsWithMargins(child, bounds)
                 val bottom = bounds.bottom + Math.round(child.translationY)
                 divider?.apply {
@@ -78,12 +80,14 @@ internal class SkipDividerItemDecorator(private val divider: Drawable? = null) :
         for (i in 0 until childCount) {
             val child = parent.getChildAt(i)
             val position = parent.getChildAdapterPosition(child)
-            val hasDivider = when (parent.adapter) {
-                is PrimeAdapter -> (parent.adapter as PrimeAdapter).getItem(position).hasDivider
-                is PrimeAdapterAsyncDiffer -> (parent.adapter as PrimeAdapterAsyncDiffer).getItem(position).hasDivider
+            val hasDivider = when {
+                position == RecyclerView.NO_POSITION -> false
+                position == parent.adapter!!.itemCount - 1 -> false
+                parent.adapter is PrimeAdapter -> (parent.adapter as PrimeAdapter).getItem(position).hasDivider
+                parent.adapter is PrimeAdapterAsyncDiffer -> (parent.adapter as PrimeAdapterAsyncDiffer).getItem(position).hasDivider
                 else -> false
             }
-            if (position != RecyclerView.NO_POSITION && position != parent.adapter!!.itemCount - 1 && hasDivider) {
+            if (hasDivider) {
                 parent.layoutManager!!.getDecoratedBoundsWithMargins(child, bounds)
                 val right = bounds.right + Math.round(child.translationX)
                 divider?.apply {
@@ -99,12 +103,14 @@ internal class SkipDividerItemDecorator(private val divider: Drawable? = null) :
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         if (orientation == null) orientation = getOrientation(parent)
         val position = parent.getChildAdapterPosition(view)
-        val hasDivider = when (parent.adapter) {
-            is PrimeAdapter -> (parent.adapter as PrimeAdapter).getItem(position).hasDivider
-            is PrimeAdapterAsyncDiffer -> (parent.adapter as PrimeAdapterAsyncDiffer).getItem(position).hasDivider
+        val hasDivider = when {
+            position == RecyclerView.NO_POSITION -> false
+            position == parent.adapter!!.itemCount - 1 -> false
+            parent.adapter is PrimeAdapter -> (parent.adapter as PrimeAdapter).getItem(position).hasDivider
+            parent.adapter is PrimeAdapterAsyncDiffer -> (parent.adapter as PrimeAdapterAsyncDiffer).getItem(position).hasDivider
             else -> false
         }
-        if (position != RecyclerView.NO_POSITION && position != parent.adapter!!.itemCount - 1 && hasDivider) {
+        if (hasDivider) {
             if (divider == null) {
                 outRect.set(0, 0, 0, 0)
                 return
